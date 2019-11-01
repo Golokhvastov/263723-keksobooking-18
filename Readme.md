@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Дмитрий Голохвастов](https://up.htmlacademy.ru/javascript/18/user/263723).
-* Наставник: `Неизвестно`.
+* Наставник: [Никита Пиковец](https://htmlacademy.ru/profile/id503133).
 
 ---
 
