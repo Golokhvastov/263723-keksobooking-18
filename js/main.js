@@ -1,6 +1,8 @@
 'use strict';
 
-var ANNOUNCEMENT_AMOUNT = 8;
+var PIN_AMOUNT = 8;
+var PIN_WIDTH = 50;
+var PIN_HEIGHT = 70;
 var LOCATION_X_MIN = 0;
 var LOCATION_X_MAX = document.querySelector('.map').clientWidth;
 var LOCATION_Y_MIN = 130;
@@ -52,7 +54,7 @@ var getRandomArrayPart = function (array) {
   return result;
 }
 
-var getAnnouncement = function (avatarNumber) {
+var getPin = function (avatarNumber) {
   var locationX = getRandomInt(LOCATION_X_MIN, LOCATION_X_MAX);
   var locationY = getRandomInt(LOCATION_Y_MIN, LOCATION_Y_MAX);
   return {
@@ -60,7 +62,7 @@ var getAnnouncement = function (avatarNumber) {
       avatar: 'img/avatars/user0' + avatarNumber + '.png'
     },
     offer: {
-      title: 'заголовок предложения',
+      title: 'заголовок предложения' + avatarNumber,
       address: locationX + ', ' + locationY,
       price: getRandomInt(PRICE_MIN, PRICE_MAX),
       type: TYPES[getRandomInt(0, TYPES.length - 1)],
@@ -79,15 +81,39 @@ var getAnnouncement = function (avatarNumber) {
   };
 }
 
-var getSimilarAnnouncements = function (amount) {
+var getSimilarPins = function (amount) {
   var result = [];
-  var avatarNumbers = getArrayUniqueNumbers(1, ANNOUNCEMENT_AMOUNT, ANNOUNCEMENT_AMOUNT);
+  var avatarNumbers = getArrayUniqueNumbers(1, PIN_AMOUNT, PIN_AMOUNT);
   for (var i = 0; i < amount; i++) {
-    result.push(getAnnouncement(avatarNumbers[i]));
+    result.push(getPin(avatarNumbers[i]));
   }
   return result;
 }
 
-var similarAnnouncements = getSimilarAnnouncements(ANNOUNCEMENT_AMOUNT);
+var createPinElement = function (template, pin) {
+  var pinElement = template.content.cloneNode(true);
+  var locX = pin.location.x - (PIN_WIDTH / 2);
+  var locY = pin.location.y - PIN_HEIGHT;
+  pinElement.querySelector('.map__pin').style = 'left: ' + locX + 'px; top: ' + locY + 'px;';
+  pinElement.querySelector('.map__pin img').src = pin.author.avatar;
+  pinElement.querySelector('.map__pin img').alt = pin.offer.title;
+  return pinElement;
+}
+
+var renderSimilarPins = function (list, template, pins) {
+  var fragment = document.createDocumentFragment();
+  for (var i = 0; i < pins.length; i++) {
+    fragment.appendChild(createPinElement(template, pins[i]));
+  }
+  list.appendChild(fragment);
+}
+
+var similarPins = getSimilarPins(PIN_AMOUNT);
+
 var map = document.querySelector('.map');
 map.classList.remove('map--faded');
+
+var mapPinsList = document.querySelector('.map__pins');
+var similarPinTemplate = document.querySelector('#pin');
+
+renderSimilarPins(mapPinsList, similarPinTemplate, similarPins);
