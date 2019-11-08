@@ -89,4 +89,5 @@ var getSimilarAnnouncements = function (amount) {
 }
 
 var similarAnnouncements = getSimilarAnnouncements(ANNOUNCEMENT_AMOUNT);
-console.log(similarAnnouncements);
+var map = document.querySelector('.map');
+map.classList.remove('map--faded');
