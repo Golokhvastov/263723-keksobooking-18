@@ -9,7 +9,7 @@ var LOCATION_Y_MIN = 130;
 var LOCATION_Y_MAX = 630;
 var PRICE_MIN = 1000;
 var PRICE_MAX = 100000;
-var TYPES = ['palace', 'flat', 'house', 'bungalo']
+var TYPES = ['palace', 'flat', 'house', 'bungalo'];
 var ROOMS_MIN = 1;
 var ROOMS_MAX = 10;
 var GUESTS_MIN = 1;
@@ -22,27 +22,28 @@ var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.g
 
 var getRandomInt = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+};
 
 var getArrayUniqueNumbers = function (min, max, length) {
   var result = [];
   var usedNumbers = [];
-  if (length - 1 <= max - min) { //Иначе будет бесконечный цикл
+  if (length - 1 <= max - min) { // Иначе будет бесконечный цикл
     for (var i = 0; i < length; i++) {
       var uniqueNumber = getRandomInt(min, max);
-      while (true) {
+      var isNumberUsed = true;
+      while (isNumberUsed) {
         if (usedNumbers.includes(uniqueNumber)) {
           uniqueNumber = getRandomInt(min, max);
         } else {
           usedNumbers.push(uniqueNumber);
-          break;
+          isNumberUsed = false;
         }
       }
       result.push(uniqueNumber);
     }
   }
   return result;
-}
+};
 
 var getRandomArrayPart = function (array) {
   var result = [];
@@ -52,7 +53,7 @@ var getRandomArrayPart = function (array) {
     result.push(array[randomNumbers[i]]);
   }
   return result;
-}
+};
 
 var getPin = function (avatarNumber) {
   var locationX = getRandomInt(LOCATION_X_MIN, LOCATION_X_MAX);
@@ -79,7 +80,7 @@ var getPin = function (avatarNumber) {
       y: locationY
     }
   };
-}
+};
 
 var getSimilarPins = function (amount) {
   var result = [];
@@ -88,7 +89,7 @@ var getSimilarPins = function (amount) {
     result.push(getPin(avatarNumbers[i]));
   }
   return result;
-}
+};
 
 var createPinElement = function (template, pin) {
   var pinElement = template.content.cloneNode(true);
@@ -98,7 +99,7 @@ var createPinElement = function (template, pin) {
   pinElement.querySelector('.map__pin img').src = pin.author.avatar;
   pinElement.querySelector('.map__pin img').alt = pin.offer.title;
   return pinElement;
-}
+};
 
 var renderSimilarPins = function (list, template, pins) {
   var fragment = document.createDocumentFragment();
@@ -106,7 +107,7 @@ var renderSimilarPins = function (list, template, pins) {
     fragment.appendChild(createPinElement(template, pins[i]));
   }
   list.appendChild(fragment);
-}
+};
 
 var similarPins = getSimilarPins(PIN_AMOUNT);
 
