@@ -186,7 +186,7 @@ var inactiveState = function () {
   for (var i = 0; i < mapFiltersFieldsets.length; i++) {
     mapFiltersFieldsets[i].disabled = true;
   }
-}
+};
 
 var activeState = function () {
   map.classList.remove('map--faded');
@@ -197,7 +197,7 @@ var activeState = function () {
   for (var i = 0; i < mapFiltersFieldsets.length; i++) {
     mapFiltersFieldsets[i].disabled = false;
   }
-}
+};
 
 var setAddressFromMap = function () {
   var left = parseInt(mapPinMain.offsetLeft) + Math.round(PIN_MAIN_WIDTH / 2);
@@ -210,7 +210,7 @@ var setAddressFromMap = function () {
   var leftString = left + '';
   var topString = top + '';
   adFormAddress.value = leftString + ', ' + topString;
-}
+};
 
 var onMapPinMainMousedown = function () {
   activeState();
@@ -220,15 +220,29 @@ var onMapPinMainMousedown = function () {
   renderCard(map, cardTemplate, similarPins[0]);
 
   mapPinMain.removeEventListener('mousedown', onMapPinMainMousedown);
-  mapPinMain.removeEventListener('keydown', onMapPinMainENTER);
-}
+  mapPinMain.removeEventListener('keydown', onMapPinMainEnter);
+};
 
-var onMapPinMainENTER = function (evt) {
+var onMapPinMainEnter = function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
     onMapPinMainMousedown();
   }
+};
+
+var isRoomsEnough = function () {
+  if (adFormRoomNumber.value >= adFormCapacity.value) {
+    return true;
+  }
+  return false;
 }
 
+var onAdFormCapacityOrRoomChange = function (evt) {
+  if (isRoomsEnough()) {
+    adFormCapacity.setCustomValidity('');
+  } else {
+    adFormCapacity.setCustomValidity('Количество мест не может превышать Количество комнат');
+  }
+}
 
 var map = document.querySelector('.map');
 var mapPinMain = document.querySelector('.map__pin--main');
@@ -238,11 +252,19 @@ var cardTemplate = document.querySelector('#card');
 var adForm = document.querySelector('.ad-form');
 var adFormFieldsets = document.querySelectorAll('.ad-form  fieldset');
 var adFormAddress = adForm.querySelector('#address');
+var adFormRoomNumber = adForm.querySelector('#room_number');
+var adFormCapacity = adForm.querySelector('#capacity');
 var mapFiltersFieldsets = document.querySelectorAll('.map__filters  select, .map__filters  fieldset');
 
 var similarPins = getSimilarPins(PIN_AMOUNT);
 
 inactiveState();
 setAddressFromMap();
+adForm.setAttribute('action', 'https://js.dump.academy/keksobooking');
 mapPinMain.addEventListener('mousedown', onMapPinMainMousedown);
-mapPinMain.addEventListener('keydown', onMapPinMainENTER);
+mapPinMain.addEventListener('keydown', onMapPinMainEnter);
+
+onAdFormCapacityOrRoomChange();
+
+adFormCapacity.addEventListener('change', onAdFormCapacityOrRoomChange);
+adFormRoomNumber.addEventListener('change', onAdFormCapacityOrRoomChange);
