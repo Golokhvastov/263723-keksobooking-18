@@ -166,16 +166,14 @@ var renderCard = function (list, template, card) {
   list.insertBefore(fragment, document.querySelector('.map__filters-container'));
 };
 
-var similarPins = getSimilarPins(PIN_AMOUNT);
 
 var map = document.querySelector('.map');
-map.classList.remove('map--faded');
-
 var mapPinsList = document.querySelector('.map__pins');
 var similarPinTemplate = document.querySelector('#pin');
-
-renderSimilarPins(mapPinsList, similarPinTemplate, similarPins);
-
 var cardTemplate = document.querySelector('#card');
+
+// map.classList.remove('map--faded');
+var similarPins = getSimilarPins(PIN_AMOUNT);
+renderSimilarPins(mapPinsList, similarPinTemplate, similarPins);
 
 renderCard(map, cardTemplate, similarPins[0]);
