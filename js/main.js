@@ -21,6 +21,9 @@ var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.g
 
 var TYPES_RUS = ['Дворец', 'Квартира', 'Дом', 'Бунгало'];
 
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
+
 var getRandomInt = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
@@ -199,6 +202,13 @@ var onMapPinMainMousedown = function () {
   renderCard(map, cardTemplate, similarPins[0]);
 
   mapPinMain.removeEventListener('mousedown', onMapPinMainMousedown);
+  mapPinMain.removeEventListener('keydown', onMapPinMainENTER);
+}
+
+var onMapPinMainENTER = function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    onMapPinMainMousedown();
+  }
 }
 
 
@@ -215,3 +225,4 @@ var similarPins = getSimilarPins(PIN_AMOUNT);
 
 inactiveState();
 mapPinMain.addEventListener('mousedown', onMapPinMainMousedown);
+mapPinMain.addEventListener('keydown', onMapPinMainENTER);
