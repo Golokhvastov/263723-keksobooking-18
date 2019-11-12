@@ -24,6 +24,10 @@ var TYPES_RUS = ['Дворец', 'Квартира', 'Дом', 'Бунгало']
 var ESC_KEYCODE = 27;
 var ENTER_KEYCODE = 13;
 
+var PIN_MAIN_WIDTH = 65;
+var PIN_MAIN_HEIGHT = 60;
+var PIN_MAIN_HEIGHT_ACTIVE = PIN_MAIN_HEIGHT + 21;
+
 var getRandomInt = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
@@ -195,8 +199,22 @@ var activeState = function () {
   }
 }
 
+var setAddressFromMap = function () {
+  var left = parseInt(mapPinMain.offsetLeft) + Math.round(PIN_MAIN_WIDTH / 2);
+  var top = parseInt(mapPinMain.offsetTop);
+  if (map.classList.contains('map--faded')) {
+    top = top + Math.round(PIN_MAIN_HEIGHT / 2);
+  } else {
+    top = top + PIN_MAIN_HEIGHT_ACTIVE;
+  }
+  var leftString = left + '';
+  var topString = top + '';
+  adFormAddress.value = leftString + ', ' + topString;
+}
+
 var onMapPinMainMousedown = function () {
   activeState();
+  setAddressFromMap();
 
   renderSimilarPins(mapPinsList, similarPinTemplate, similarPins);
   renderCard(map, cardTemplate, similarPins[0]);
@@ -219,10 +237,12 @@ var similarPinTemplate = document.querySelector('#pin');
 var cardTemplate = document.querySelector('#card');
 var adForm = document.querySelector('.ad-form');
 var adFormFieldsets = document.querySelectorAll('.ad-form  fieldset');
+var adFormAddress = adForm.querySelector('#address');
 var mapFiltersFieldsets = document.querySelectorAll('.map__filters  select, .map__filters  fieldset');
 
 var similarPins = getSimilarPins(PIN_AMOUNT);
 
 inactiveState();
+setAddressFromMap();
 mapPinMain.addEventListener('mousedown', onMapPinMainMousedown);
 mapPinMain.addEventListener('keydown', onMapPinMainENTER);
