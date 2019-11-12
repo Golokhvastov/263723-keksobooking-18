@@ -21,7 +21,6 @@ var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.g
 
 var TYPES_RUS = ['Дворец', 'Квартира', 'Дом', 'Бунгало'];
 
-var ESC_KEYCODE = 27;
 var ENTER_KEYCODE = 13;
 
 var PIN_MAIN_WIDTH = 65;
@@ -120,7 +119,7 @@ var renderSimilarPins = function (list, template, pins) {
 var getTypeRus = function (type) {
   var typeRus = '';
   for (var i = 0; i < TYPES.length; i++) {
-    if (type == TYPES[i]) {
+    if (type === TYPES[i]) {
       typeRus = TYPES_RUS[i];
       break;
     }
@@ -134,10 +133,10 @@ var removeExcessiveFeatures = function (cardElement, features) {
       cardElement.querySelector('.popup__feature--' + FEATURES[i]).remove();
     }
   }
-}
+};
 
 var createCardPhotos = function (cardElement, photos) {
-  if (photos.length == 0) {
+  if (photos.length === 0) {
     cardElement.querySelector('.popup__photo').remove();
   } else {
     cardElement.querySelector('.popup__photo').src = photos[0];
@@ -183,8 +182,8 @@ var inactiveState = function () {
   for (var i = 0; i < adFormFieldsets.length; i++) {
     adFormFieldsets[i].disabled = true;
   }
-  for (var i = 0; i < mapFiltersFieldsets.length; i++) {
-    mapFiltersFieldsets[i].disabled = true;
+  for (var j = 0; j < mapFiltersFieldsets.length; j++) {
+    mapFiltersFieldsets[j].disabled = true;
   }
 };
 
@@ -194,14 +193,14 @@ var activeState = function () {
   for (var i = 0; i < adFormFieldsets.length; i++) {
     adFormFieldsets[i].disabled = false;
   }
-  for (var i = 0; i < mapFiltersFieldsets.length; i++) {
-    mapFiltersFieldsets[i].disabled = false;
+  for (var j = 0; j < mapFiltersFieldsets.length; j++) {
+    mapFiltersFieldsets[j].disabled = false;
   }
 };
 
 var setAddressFromMap = function () {
-  var left = parseInt(mapPinMain.offsetLeft) + Math.round(PIN_MAIN_WIDTH / 2);
-  var top = parseInt(mapPinMain.offsetTop);
+  var left = parseInt(mapPinMain.offsetLeft, 10) + Math.round(PIN_MAIN_WIDTH / 2);
+  var top = parseInt(mapPinMain.offsetTop, 10);
   if (map.classList.contains('map--faded')) {
     top = top + Math.round(PIN_MAIN_HEIGHT / 2);
   } else {
@@ -234,15 +233,15 @@ var isRoomsEnough = function () {
     return true;
   }
   return false;
-}
+};
 
-var onAdFormCapacityOrRoomChange = function (evt) {
+var onAdFormCapacityOrRoomChange = function () {
   if (isRoomsEnough()) {
     adFormCapacity.setCustomValidity('');
   } else {
     adFormCapacity.setCustomValidity('Количество мест не может превышать Количество комнат');
   }
-}
+};
 
 var map = document.querySelector('.map');
 var mapPinMain = document.querySelector('.map__pin--main');
