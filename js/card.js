@@ -3,7 +3,7 @@
   var removeExcessiveFeatures = function (cardElement, features) {
     for (var i = 0; i < window.constant.FEATURES.length; i++) {
       if (!features.includes(window.constant.FEATURES[i])) {
-        cardElement.querySelector('.popup__feature--' + FEATURES[i]).remove();
+        cardElement.querySelector('.popup__feature--' + window.constant.FEATURES[i]).remove();
       }
     }
   };
@@ -12,11 +12,11 @@
     if (photos.length === 0) {
       cardElement.querySelector('.popup__photo').remove();
     } else {
-      cardElement.querySelector('.popup__photo').src = photos[0];
+      cardElement.querySelector('.popup__photo').src = 'http://o0.github.io/assets/images/tokyo/hotel' + photos[0] + '.jpg';
       if (photos.length > 1) {
         for (var i = 1; i < photos.length; i++) {
           var popupPhoto = cardElement.querySelector('.popup__photo').cloneNode(true);
-          popupPhoto.src = photos[i];
+          popupPhoto.src = 'http://o0.github.io/assets/images/tokyo/hotel' + photos[i] + '.jpg';
           cardElement.querySelector('.popup__photos').appendChild(popupPhoto);
         }
       }

@@ -13,7 +13,7 @@
   var GUESTS_MAX = 10;
   var CHECK_INS = ['12:00', '13:00', '14:00'];
   var CHECK_OUTS = ['12:00', '13:00', '14:00'];
-  var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+  var PHOTOS = 3;
 
   var getPin = function (avatarNumber) {
     var locationX = window.util.getRandomInt(LOCATION_X_MIN, LOCATION_X_MAX);
@@ -33,7 +33,7 @@
         checkout: CHECK_OUTS[window.util.getRandomInt(0, CHECK_OUTS.length - 1)],
         features: window.util.getRandomArrayPart(window.constant.FEATURES),
         description: 'строка с описанием ' + avatarNumber,
-        photos: window.util.getRandomArrayPart(PHOTOS)
+        photos: window.util.getRandomArrayPart(window.util.getArrayUniqueNumbers(1, PHOTOS, PHOTOS))
       },
       location: {
         x: locationX,
@@ -52,14 +52,11 @@
       return result;
     },
     getTypeRus: function (type) {
-      var typeRus = '';
       for (var i = 0; i < TYPES.length; i++) {
         if (type === TYPES[i]) {
-          typeRus = TYPES_RUS[i];
-          break;
+          return TYPES_RUS[i];
         }
       }
-      return typeRus;
     }
   };
 })();
