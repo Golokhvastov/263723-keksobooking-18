@@ -1,15 +1,5 @@
 'use strict';
 (function () {
-  var PRICE_MAX = 1000000;
-  var ROOMS_CAPACITY = new Map().set('1', ['1'])
-                                .set('2', ['1', '2'])
-                                .set('3', ['1', '2', '3'])
-                                .set('100', ['0']);
-  var PRICE_MIN_FOR_TYPE = new Map().set('bungalo', 0)
-                                    .set('flat', 1000)
-                                    .set('house', 5000)
-                                    .set('palace', 10000);
-
   var adForm = document.querySelector('.ad-form');
   var adFormTitle = adForm.querySelector('#title');
   var adFormAddress = adForm.querySelector('#address');
@@ -21,11 +11,11 @@
   var adFormCapacity = adForm.querySelector('#capacity');
 
   var onAdFormTypeChange = function () {
-    adFormPrice.min = PRICE_MIN_FOR_TYPE.get(adFormType.value);
+    adFormPrice.min = window.constant.PRICE_MIN_FOR_TYPE.get(adFormType.value);
   }
 
   var isRoomsEnough = function () {
-    var validCapacity = ROOMS_CAPACITY.get(adFormRoomNumber.value);
+    var validCapacity = window.constant.ROOMS_CAPACITY.get(adFormRoomNumber.value);
     for (var i = 0; i < validCapacity.length; i++) {
       if (adFormCapacity.value === validCapacity[i]) {
         return true;
@@ -60,7 +50,7 @@
   adFormTitle.setAttribute('maxlength', '100');
   adFormAddress.disabled = true;
   adFormPrice.required = true;
-  adFormPrice.max = PRICE_MAX;
+  adFormPrice.max = window.constant.PRICE_MAX;
 
   adFormType.addEventListener('change', onAdFormTypeChange);
   adFormTimeIn.addEventListener('change', function () {

@@ -1,11 +1,8 @@
 'use strict';
 (function () {
-  // Убрать фичи
-  var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-
   var removeExcessiveFeatures = function (cardElement, features) {
-    for (var i = 0; i < FEATURES.length; i++) {
-      if (!features.includes(FEATURES[i])) {
+    for (var i = 0; i < window.constant.FEATURES.length; i++) {
+      if (!features.includes(window.constant.FEATURES[i])) {
         cardElement.querySelector('.popup__feature--' + FEATURES[i]).remove();
       }
     }

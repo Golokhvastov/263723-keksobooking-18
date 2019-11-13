@@ -1,20 +1,11 @@
 'use strict';
 (function () {
-  var PIN_AMOUNT = 8;
-
-  var ESC_KEYCODE = 27;
-  var ENTER_KEYCODE = 13;
-
-  var PIN_MAIN_WIDTH = 65;
-  var PIN_MAIN_HEIGHT = 60;
-  var PIN_MAIN_HEIGHT_ACTIVE = PIN_MAIN_HEIGHT + 21;
-
   var map = document.querySelector('.map');
   var mapPinMain = document.querySelector('.map__pin--main');
   var mapPinsList = document.querySelector('.map__pins');
   var similarPinTemplate = document.querySelector('#pin');
   var cardTemplate = document.querySelector('#card');
-  var similarPins = window.data.getSimilarPins(PIN_AMOUNT);
+  var similarPins = window.data.getSimilarPins(window.constant.PIN_AMOUNT);
 
   var renderSimilarPins = function (list, template, pins) {
     var fragment = document.createDocumentFragment();
@@ -31,12 +22,12 @@
   };
 
   var setAddressFromMap = function () {
-    var left = parseInt(mapPinMain.offsetLeft, 10) + Math.round(PIN_MAIN_WIDTH / 2);
+    var left = parseInt(mapPinMain.offsetLeft, 10) + Math.round(window.constant.PIN_MAIN_WIDTH / 2);
     var top = parseInt(mapPinMain.offsetTop, 10);
     if (map.classList.contains('map--faded')) {
-      top = top + Math.round(PIN_MAIN_HEIGHT / 2);
+      top = top + Math.round(window.constant.PIN_MAIN_HEIGHT / 2);
     } else {
-      top = top + PIN_MAIN_HEIGHT_ACTIVE;
+      top = top + window.constant.PIN_MAIN_HEIGHT_ACTIVE;
     }
     var leftString = left + '';
     var topString = top + '';
@@ -50,7 +41,7 @@
   }
 
   var onPopupEscPress = function (evt) {
-    if (evt.keyCode === ESC_KEYCODE) {
+    if (evt.keyCode === window.constant.ESC_KEYCODE) {
       onPopupCloseClick();
     }
   }
@@ -70,7 +61,7 @@
       onMapSimilarPinClick(i, lengthBeforeRender);
     })
     mapPinsList.children[i].addEventListener('keydown', function (evt) {
-      if (evt.keyCode === ENTER_KEYCODE) {
+      if (evt.keyCode === window.constant.ENTER_KEYCODE) {
         onMapSimilarPinClick(i, lengthBeforeRender);
       }
     })
@@ -82,7 +73,7 @@
 
     renderSimilarPins(mapPinsList, similarPinTemplate, similarPins);
 
-    var lengthBeforeRender = mapPinsList.children.length - PIN_AMOUNT;
+    var lengthBeforeRender = mapPinsList.children.length - window.constant.PIN_AMOUNT;
     for (var i = lengthBeforeRender; i < mapPinsList.children.length; i++) {
       createListenerForRenderCard(i, lengthBeforeRender);
     }
@@ -92,7 +83,7 @@
   };
 
   var onMapPinMainEnter = function (evt) {
-    if (evt.keyCode === ENTER_KEYCODE) {
+    if (evt.keyCode === window.constant.ENTER_KEYCODE) {
       onMapPinMainMousedown();
     }
   };
