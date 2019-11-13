@@ -7,9 +7,10 @@ var LOCATION_X_MIN = 0;
 var LOCATION_X_MAX = document.querySelector('.map').clientWidth;
 var LOCATION_Y_MIN = 130;
 var LOCATION_Y_MAX = 630;
-var PRICE_MIN = 1000;
-var PRICE_MAX = 100000;
+var PRICE_MIN = 0;
+var PRICE_MAX = 1000000;
 var TYPES = ['palace', 'flat', 'house', 'bungalo'];
+var TYPES_RUS = ['Дворец', 'Квартира', 'Дом', 'Бунгало'];
 var ROOMS_MIN = 1;
 var ROOMS_MAX = 10;
 var GUESTS_MIN = 1;
@@ -26,11 +27,21 @@ var TYPES_RUS = {
   'palace': 'Дворец'
 };
 
+var ESC_KEYCODE = 27;
 var ENTER_KEYCODE = 13;
 
 var PIN_MAIN_WIDTH = 65;
 var PIN_MAIN_HEIGHT = 60;
 var PIN_MAIN_HEIGHT_ACTIVE = PIN_MAIN_HEIGHT + 21;
+
+var ROOMS_CAPACITY = new Map().set('1', ['1'])
+                              .set('2', ['1', '2'])
+                              .set('3', ['1', '2', '3'])
+                              .set('100', ['0']);
+var PRICE_MIN_FOR_TYPE = new Map().set('bungalo', 0)
+                                  .set('flat', 1000)
+                                  .set('house', 5000)
+                                  .set('palace', 10000);
 
 var getRandomInt = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -205,12 +216,49 @@ var setAddressFromMap = function () {
   adFormAddress.value = leftString + ', ' + topString;
 };
 
+var onPopupCloseClick = function () {
+  map.querySelector('.popup__close').removeEventListener('click', onPopupCloseClick);
+  document.removeEventListener('keydown', onPopupEscPress);
+  map.removeChild(map.querySelector('.map__card'));
+}
+
+var onPopupEscPress = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    onPopupCloseClick();
+  }
+}
+
+var onMapSimilarPinClick = function (i, lengthBeforeRender) {
+  if (map.contains(map.querySelector('.popup__close'))) {
+    onPopupCloseClick();
+  }
+  renderCard(map, cardTemplate, similarPins[i - lengthBeforeRender]);
+
+  map.querySelector('.popup__close').addEventListener('click', onPopupCloseClick);
+  document.addEventListener('keydown', onPopupEscPress);
+}
+
+var createListenerForRenderCard = function (i, lengthBeforeRender) {
+  mapPinsList.children[i].addEventListener('click', function () {
+    onMapSimilarPinClick(i, lengthBeforeRender);
+  })
+  mapPinsList.children[i].addEventListener('keydown', function (evt) {
+    if (evt.keyCode === ENTER_KEYCODE) {
+      onMapSimilarPinClick(i, lengthBeforeRender);
+    }
+  })
+}
+
 var onMapPinMainMousedown = function () {
   activeState();
   setAddressFromMap();
 
   renderSimilarPins(mapPinsList, similarPinTemplate, similarPins);
-  renderCard(map, cardTemplate, similarPins[0]);
+
+  var lengthBeforeRender = mapPinsList.children.length - PIN_AMOUNT;
+  for (var i = lengthBeforeRender; i < mapPinsList.children.length; i++) {
+    createListenerForRenderCard(i, lengthBeforeRender);
+  }
 
   mapPinMain.removeEventListener('mousedown', onMapPinMainMousedown);
   mapPinMain.removeEventListener('keydown', onMapPinMainEnter);
@@ -222,9 +270,16 @@ var onMapPinMainEnter = function (evt) {
   }
 };
 
+var onAdFormTypeChange = function () {
+  adFormPrice.min = PRICE_MIN_FOR_TYPE.get(adFormType.value);
+}
+
 var isRoomsEnough = function () {
-  if (adFormRoomNumber.value >= adFormCapacity.value) {
-    return true;
+  var validCapacity = ROOMS_CAPACITY.get(adFormRoomNumber.value);
+  for (var i = 0; i < validCapacity.length; i++) {
+    if (adFormCapacity.value === validCapacity[i]) {
+      return true;
+    }
   }
   return false;
 };
@@ -232,6 +287,8 @@ var isRoomsEnough = function () {
 var onAdFormCapacityOrRoomChange = function () {
   if (isRoomsEnough()) {
     adFormCapacity.setCustomValidity('');
+  } else if (adFormRoomNumber.value === '100') {
+    adFormCapacity.setCustomValidity('100 комнат - не для гостей');
   } else {
     adFormCapacity.setCustomValidity('Количество мест не может превышать Количество комнат');
   }
@@ -244,10 +301,15 @@ var similarPinTemplate = document.querySelector('#pin');
 var cardTemplate = document.querySelector('#card');
 var adForm = document.querySelector('.ad-form');
 var adFormFieldsets = document.querySelectorAll('.ad-form  fieldset');
+var mapFiltersFieldsets = document.querySelectorAll('.map__filters  select, .map__filters  fieldset');
+var adFormTitle = adForm.querySelector('#title');
 var adFormAddress = adForm.querySelector('#address');
+var adFormType = adForm.querySelector('#type');
+var adFormPrice = adForm.querySelector('#price');
+var adFormTimeIn = adForm.querySelector('#timein');
+var adFormTimeOut = adForm.querySelector('#timeout');
 var adFormRoomNumber = adForm.querySelector('#room_number');
 var adFormCapacity = adForm.querySelector('#capacity');
-var mapFiltersFieldsets = document.querySelectorAll('.map__filters  select, .map__filters  fieldset');
 
 var similarPins = getSimilarPins(PIN_AMOUNT);
 
@@ -258,6 +320,21 @@ mapPinMain.addEventListener('mousedown', onMapPinMainMousedown);
 mapPinMain.addEventListener('keydown', onMapPinMainEnter);
 
 onAdFormCapacityOrRoomChange();
+onAdFormTypeChange();
 
+adFormTitle.required = true;
+adFormTitle.setAttribute('minlength', '30');
+adFormTitle.setAttribute('maxlength', '100');
+adFormAddress.disabled = true;
+adFormPrice.required = true;
+adFormPrice.max = PRICE_MAX;
+
+adFormType.addEventListener('change', onAdFormTypeChange);
+adFormTimeIn.addEventListener('change', function () {
+  adFormTimeOut.value = adFormTimeIn.value;
+});
+adFormTimeIn.addEventListener('change', function () {
+  adFormTimeIn.value = adFormTimeOut.value;
+});
 adFormCapacity.addEventListener('change', onAdFormCapacityOrRoomChange);
 adFormRoomNumber.addEventListener('change', onAdFormCapacityOrRoomChange);
