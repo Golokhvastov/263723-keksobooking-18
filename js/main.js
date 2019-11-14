@@ -24,7 +24,7 @@ var TYPES_RUS = {
   'flat': 'Квартира',
   'house': 'Дом',
   'palace': 'Дворец'
-}
+};
 
 var ENTER_KEYCODE = 13;
 
