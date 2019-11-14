@@ -38,13 +38,13 @@
     map.querySelector('.popup__close').removeEventListener('click', onPopupCloseClick);
     document.removeEventListener('keydown', onPopupEscPress);
     map.removeChild(map.querySelector('.map__card'));
-  }
+  };
 
   var onPopupEscPress = function (evt) {
     if (evt.keyCode === window.constant.ESC_KEYCODE) {
       onPopupCloseClick();
     }
-  }
+  };
 
   var onMapSimilarPinClick = function (i, lengthBeforeRender) {
     if (map.contains(map.querySelector('.popup__close'))) {
@@ -54,18 +54,18 @@
 
     map.querySelector('.popup__close').addEventListener('click', onPopupCloseClick);
     document.addEventListener('keydown', onPopupEscPress);
-  }
+  };
 
   var createListenerForRenderCard = function (i, lengthBeforeRender) {
     mapPinsList.children[i].addEventListener('click', function () {
       onMapSimilarPinClick(i, lengthBeforeRender);
-    })
+    });
     mapPinsList.children[i].addEventListener('keydown', function (evt) {
       if (evt.keyCode === window.constant.ENTER_KEYCODE) {
         onMapSimilarPinClick(i, lengthBeforeRender);
       }
-    })
-  }
+    });
+  };
 
   var onMapPinMainMousedown = function () {
     window.condition.activeStatus();

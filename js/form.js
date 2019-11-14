@@ -12,7 +12,7 @@
 
   var onAdFormTypeChange = function () {
     adFormPrice.min = window.constant.PARAMETERS_FROM_TYPE[adFormType.value].minPrice;
-  }
+  };
 
   var isRoomsEnough = function () {
     var validCapacity = window.constant.ROOMS_CAPACITY[adFormRoomNumber.value];
@@ -38,7 +38,7 @@
     setAdFormAddress: function (address) {
       adFormAddress.value = address;
     }
-  }
+  };
 
   adForm.setAttribute('action', 'https://js.dump.academy/keksobooking');
 
