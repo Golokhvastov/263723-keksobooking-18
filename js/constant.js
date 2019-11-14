@@ -1,5 +1,8 @@
 'use strict';
 window.constant = {
+  PIN_Y_LIMIT_MIN: 130,
+  PIN_Y_LIMIT_MAX: 630,
+
   PIN_MAIN_WIDTH: 65,
   PIN_MAIN_HEIGHT: 60,
   PIN_MAIN_HEIGHT_ACTIVE: 60 + 21,
