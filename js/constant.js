@@ -1,3 +1,4 @@
+'use strict';
 window.constant = {
   PIN_MAIN_WIDTH: 65,
   PIN_MAIN_HEIGHT: 60,
