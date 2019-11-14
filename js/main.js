@@ -19,10 +19,11 @@ var CHECK_OUTS = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var PHOTOS = 3;
 
-var TYPES_RUS = new Map().set('bungalo', 'Бунгало')
-                          .set('flat', 'Квартира')
-                          .set('house', 'Дом')
-                          .set('palace', 'Дворец')
+var TYPES_RUS = new Map();
+TYPES_RUS.set('bungalo', 'Бунгало')
+          .set('flat', 'Квартира')
+          .set('house', 'Дом')
+          .set('palace', 'Дворец');
 
 var ENTER_KEYCODE = 13;
 
