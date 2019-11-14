@@ -1,12 +1,12 @@
 'use strict';
 (function () {
+  // Константы для создания МОК, в дальнейшем удалятся
   var LOCATION_X_MIN = 0;
   var LOCATION_X_MAX = document.querySelector('.map').clientWidth;
   var LOCATION_Y_MIN = 130;
   var LOCATION_Y_MAX = 630;
   var PRICE_MIN = 0;
   var TYPES = ['palace', 'flat', 'house', 'bungalo'];
-  var TYPES_RUS = ['Дворец', 'Квартира', 'Дом', 'Бунгало'];
   var ROOMS_MIN = 1;
   var ROOMS_MAX = 10;
   var GUESTS_MIN = 1;
@@ -50,13 +50,6 @@
         result.push(getPin(avatarNumbers[i]));
       }
       return result;
-    },
-    getTypeRus: function (type) {
-      for (var i = 0; i < TYPES.length; i++) {
-        if (type === TYPES[i]) {
-          return TYPES_RUS[i];
-        }
-      }
     }
   };
 })();

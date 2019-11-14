@@ -11,11 +11,11 @@
   var adFormCapacity = adForm.querySelector('#capacity');
 
   var onAdFormTypeChange = function () {
-    adFormPrice.min = window.constant.PRICE_MIN_FOR_TYPE.get(adFormType.value);
+    adFormPrice.min = window.constant.PARAMETERS_FROM_TYPE[adFormType.value].minPrice;
   }
 
   var isRoomsEnough = function () {
-    var validCapacity = window.constant.ROOMS_CAPACITY.get(adFormRoomNumber.value);
+    var validCapacity = window.constant.ROOMS_CAPACITY[adFormRoomNumber.value];
     for (var i = 0; i < validCapacity.length; i++) {
       if (adFormCapacity.value === validCapacity[i]) {
         return true;
