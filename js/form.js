@@ -48,7 +48,7 @@
   adFormTitle.required = true;
   adFormTitle.setAttribute('minlength', '30');
   adFormTitle.setAttribute('maxlength', '100');
-  adFormAddress.disabled = true;
+  adFormAddress.setAttribute('readonly', true);
   adFormPrice.required = true;
   adFormPrice.max = window.constant.PRICE_MAX;
 
