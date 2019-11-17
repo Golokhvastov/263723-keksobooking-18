@@ -16,13 +16,13 @@
 
     document.removeEventListener('click', onErrorClick);
     document.removeEventListener('keydown', onEscPress);
-  }
+  };
 
   var onEscPress = function (evt) {
     if (evt.keyCode === window.constant.ESC_KEYCODE) {
       onErrorClick();
     }
-  }
+  };
 
   window.onError = function (message) {
     renderErrorMessage(errorTemplate, message);

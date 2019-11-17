@@ -61,7 +61,7 @@
       window.condition.activeStatus();
       window.map.setAddressFromMap();
 
-      window.load('https://js.dump.academy/keksobooking/data', onSuccess, onError);
+      window.load('https://js.dump.academy/keksobooking/data', onSuccess, window.onError);
     }
   };
 
@@ -172,7 +172,7 @@
       var topString = top + '';
       window.form.setAdFormAddress(leftString + ', ' + topString);
     }
-  }
+  };
 
   window.condition.inactiveStatus();
 

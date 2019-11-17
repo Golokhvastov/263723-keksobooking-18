@@ -42,13 +42,13 @@
 
     document.removeEventListener('click', onSuccessClick);
     document.removeEventListener('keydown', onEscPress);
-  }
+  };
 
-  var onEscPress = function () {
+  var onEscPress = function (evt) {
     if (evt.keyCode === window.constant.ESC_KEYCODE) {
       onSuccessClick();
     }
-  }
+  };
 
   var renderSuccessMessage = function (template) {
     var fragment = template.content.cloneNode(true);
@@ -88,7 +88,7 @@
 
   adForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
-    window.upload(new FormData(adForm), function (response) {
+    window.upload(new FormData(adForm), function () {
       renderSuccessMessage(successTemplate);
       adForm.reset();
       window.map.removeSimilarPinsAndCard();
