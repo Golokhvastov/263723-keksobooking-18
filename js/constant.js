@@ -7,7 +7,6 @@ window.constant = {
   PIN_MAIN_HEIGHT: 60,
   PIN_MAIN_HEIGHT_ACTIVE: 60 + 21,
 
-  PIN_AMOUNT: 8,
   PIN_WIDTH: 50,
   PIN_HEIGHT: 70,
 

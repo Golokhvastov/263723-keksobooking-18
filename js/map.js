@@ -1,11 +1,13 @@
 'use strict';
 (function () {
+  var domElementMain = document.querySelector('main');
   var map = document.querySelector('.map');
   var mapPinMain = document.querySelector('.map__pin--main');
   var mapPinsList = document.querySelector('.map__pins');
   var similarPinTemplate = document.querySelector('#pin');
   var cardTemplate = document.querySelector('#card');
-  var similarPins = window.data.getSimilarPins(window.constant.PIN_AMOUNT);
+  var errorTemplate = document.querySelector('#error');
+  var similarPins = [];
 
   var renderSimilarPins = function (list, template, pins) {
     var fragment = document.createDocumentFragment();
@@ -16,8 +18,7 @@
   };
 
   var renderCard = function (list, template, card) {
-    var fragment = document.createDocumentFragment();
-    fragment.appendChild(window.card.createCardElement(template, card));
+    var fragment = window.card.createCardElement(template, card);
     list.insertBefore(fragment, document.querySelector('.map__filters-container'));
   };
 
@@ -46,23 +47,23 @@
     }
   };
 
-  var onMapSimilarPinClick = function (i, lengthBeforeRender) {
+  var onMapSimilarPinClick = function (similarPin) {
     if (map.contains(map.querySelector('.popup__close'))) {
       onPopupCloseClick();
     }
-    renderCard(map, cardTemplate, similarPins[i - lengthBeforeRender]);
+    renderCard(map, cardTemplate, similarPin);
 
     map.querySelector('.popup__close').addEventListener('click', onPopupCloseClick);
     document.addEventListener('keydown', onPopupEscPress);
   };
 
-  var createListenerForRenderCard = function (i, lengthBeforeRender) {
-    mapPinsList.children[i].addEventListener('click', function () {
-      onMapSimilarPinClick(i, lengthBeforeRender);
+  var createListenerForRenderCard = function (pinDomElement, similarPin) {
+    pinDomElement.addEventListener('click', function () {
+      onMapSimilarPinClick(similarPin);
     });
-    mapPinsList.children[i].addEventListener('keydown', function (evt) {
+    pinDomElement.addEventListener('keydown', function (evt) {
       if (evt.keyCode === window.constant.ENTER_KEYCODE) {
-        onMapSimilarPinClick(i, lengthBeforeRender);
+        onMapSimilarPinClick(similarPin);
       }
     });
   };
@@ -71,12 +72,7 @@
     window.condition.activeStatus();
     setAddressFromMap();
 
-    renderSimilarPins(mapPinsList, similarPinTemplate, similarPins);
-
-    var lengthBeforeRender = mapPinsList.children.length - window.constant.PIN_AMOUNT;
-    for (var i = lengthBeforeRender; i < mapPinsList.children.length; i++) {
-      createListenerForRenderCard(i, lengthBeforeRender);
-    }
+    window.load('https://js.dump.academy/keksobooking/data', onSuccess, onError);
 
     mapPinMain.removeEventListener('mousedown', onMapPinMainMousedownFirstTime);
     mapPinMain.removeEventListener('keydown', onMapPinMainEnterFirstTime);
@@ -151,6 +147,40 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   }
+
+  var renderErrorMessage = function (template, message) {
+    var fragment = template.content.cloneNode(true);
+    fragment.querySelector('.error__message').textContent = message;
+    domElementMain.appendChild(fragment);
+  }
+
+  var onErrorButtonClick = function (url) {
+    domElementMain.removeChild(domElementMain.querySelector('.error'));
+    window.load(url, onSuccess, onError);
+  }
+
+  var onError = function (message, url) {
+    renderErrorMessage(errorTemplate, message);
+    var errorButton = document.querySelector('.error__button');
+    errorButton.addEventListener('click', function () {
+      onErrorButtonClick(url);
+    });
+    errorButton.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === window.constant.ENTER_KEYCODE) {
+        onErrorButtonClick(url);
+      }
+    });
+  };
+
+  var onSuccess = function (data) {
+    similarPins = data;
+    renderSimilarPins(mapPinsList, similarPinTemplate, similarPins);
+
+    var lengthBeforeRender = mapPinsList.children.length - similarPins.length
+    for (var i = 0; i < similarPins.length; i++) {
+      createListenerForRenderCard(mapPinsList.children[lengthBeforeRender + i], similarPins[i]);
+    }
+  };
 
   window.condition.inactiveStatus();
   setAddressFromMap();
