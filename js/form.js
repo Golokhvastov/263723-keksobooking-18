@@ -10,6 +10,9 @@
   var adFormRoomNumber = adForm.querySelector('#room_number');
   var adFormCapacity = adForm.querySelector('#capacity');
 
+  var domElementMain = document.querySelector('main');
+  var successTemplate = document.querySelector('#success');
+
   var onAdFormTypeChange = function () {
     adFormPrice.min = window.constant.PARAMETERS_FROM_TYPE[adFormType.value].minPrice;
   };
@@ -32,6 +35,27 @@
     } else {
       adFormCapacity.setCustomValidity('Количество мест не может превышать Количество комнат');
     }
+  };
+
+  var onSuccessClick = function () {
+    domElementMain.removeChild(domElementMain.querySelector('.success'));
+
+    document.removeEventListener('click', onSuccessClick);
+    document.removeEventListener('keydown', onEscPress);
+  }
+
+  var onEscPress = function () {
+    if (evt.keyCode === window.constant.ESC_KEYCODE) {
+      onSuccessClick();
+    }
+  }
+
+  var renderSuccessMessage = function (template) {
+    var fragment = template.content.cloneNode(true);
+    domElementMain.appendChild(fragment);
+
+    document.addEventListener('click', onSuccessClick);
+    document.addEventListener('keydown', onEscPress);
   };
 
   window.form = {
@@ -65,6 +89,7 @@
   adForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
     window.upload(new FormData(adForm), function (response) {
+      renderSuccessMessage(successTemplate);
       adForm.reset();
       window.map.removeSimilarPinsAndCard();
       window.map.returnPinMainToStartPosition();

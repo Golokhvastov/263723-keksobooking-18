@@ -9,17 +9,14 @@
     domElementMain.appendChild(fragment);
   };
 
-  var removeError = function () {
-    domElementMain.removeChild(domElementMain.querySelector('.error'));
-    document.removeEventListener('click', onErrorClick);
-    document.removeEventListener('keydown', onEscKeydown);
-  }
-
   var onErrorClick = function () {
-    removeError();
+    domElementMain.removeChild(domElementMain.querySelector('.error'));
+
+    document.removeEventListener('click', onErrorClick);
+    document.removeEventListener('keydown', onEscPress);
   }
 
-  var onEscKeydown = function (evt) {
+  var onEscPress = function (evt) {
     if (evt.keyCode === window.constant.ESC_KEYCODE) {
       onErrorClick();
     }
@@ -37,6 +34,6 @@
       }
     });
     document.addEventListener('click', onErrorClick);
-    document.addEventListener('keydown', onEscKeydown);
+    document.addEventListener('keydown', onEscPress);
   };
 })();
