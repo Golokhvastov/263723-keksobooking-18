@@ -66,6 +66,9 @@
     evt.preventDefault();
     window.upload(new FormData(adForm), function (response) {
       adForm.reset();
+      window.map.removeSimilarPinsAndCard();
+      window.map.returnPinMainToStartPosition();
+      window.condition.inactiveStatus();
     });
   });
 })();

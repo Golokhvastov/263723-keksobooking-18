@@ -1,11 +1,16 @@
 'use strict';
 (function () {
+  var isActive = true;
   var map = document.querySelector('.map');
   var adForm = document.querySelector('.ad-form');
   var adFormFieldsets = document.querySelectorAll('.ad-form  fieldset');
   var mapFiltersFieldsets = document.querySelectorAll('.map__filters  select, .map__filters  fieldset');
 
   window.condition = {
+    isStatusActive: function () {
+      return isActive;
+    },
+
     inactiveStatus: function () {
       if (!map.classList.contains('map--faded')) {
         map.classList.add('map--faded');
@@ -19,6 +24,7 @@
       for (var j = 0; j < mapFiltersFieldsets.length; j++) {
         mapFiltersFieldsets[j].disabled = true;
       }
+      isActive = false;
     },
     activeStatus: function () {
       map.classList.remove('map--faded');
@@ -29,6 +35,7 @@
       for (var j = 0; j < mapFiltersFieldsets.length; j++) {
         mapFiltersFieldsets[j].disabled = false;
       }
+      isActive = true;
     }
   };
 })();

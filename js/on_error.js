@@ -15,11 +15,6 @@
     document.removeEventListener('keydown', onEscKeydown);
   }
 
-  var onErrorButtonClick = function (url, onSuccess, onError) {
-    removeError();
-    window.load(url, onSuccess, onError);
-  };
-
   var onErrorClick = function () {
     removeError();
   }
@@ -30,17 +25,15 @@
     }
   }
 
-  window.error = function (message, url, onSuccess, onError) {
+  window.onError = function (message) {
     renderErrorMessage(errorTemplate, message);
 
     var errorButton = document.querySelector('.error__button');
 
-    errorButton.addEventListener('click', function (evt) {
-      onErrorButtonClick(url, onSuccess, onError);
-    });
+    errorButton.addEventListener('click', onErrorClick);
     errorButton.addEventListener('keydown', function (evt) {
       if (evt.keyCode === window.constant.ENTER_KEYCODE) {
-        onErrorButtonClick(url, onSuccess, onError);
+        onErrorClick();
       }
     });
     document.addEventListener('click', onErrorClick);

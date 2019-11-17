@@ -6,6 +6,9 @@
   var similarPinTemplate = document.querySelector('#pin');
   var cardTemplate = document.querySelector('#card');
   var similarPins = [];
+  var lengthBeforeRender = mapPinsList.children.length;
+  var pinMainStartY = mapPinMain.style.top;
+  var pinMainStartX = mapPinMain.style.left;
 
   var renderSimilarPins = function (list, template, pins) {
     var fragment = document.createDocumentFragment();
@@ -66,24 +69,25 @@
     });
   };
 
-  var onMapPinMainMousedownFirstTime = function () {
-    window.condition.activeStatus();
-    setAddressFromMap();
+  var activatePage = function () {
+    if (!window.condition.isStatusActive()) {
+      window.condition.activeStatus();
+      setAddressFromMap();
 
-    window.load('https://js.dump.academy/keksobooking/data', onSuccess, onError);
-
-    mapPinMain.removeEventListener('mousedown', onMapPinMainMousedownFirstTime);
-    mapPinMain.removeEventListener('keydown', onMapPinMainEnterFirstTime);
+      window.load('https://js.dump.academy/keksobooking/data', onSuccess, onError);
+    }
   };
 
-  var onMapPinMainEnterFirstTime = function (evt) {
+  var onMapPinMainEnter = function (evt) {
     if (evt.keyCode === window.constant.ENTER_KEYCODE) {
-      onMapPinMainMousedownFirstTime();
+      activatePage();
     }
   };
 
   var onMapPinMainMousedown = function (evt) {
     evt.preventDefault();
+
+    activatePage();
 
     var startCoords = {
       x: evt.clientX,
@@ -146,27 +150,33 @@
     document.addEventListener('mouseup', onMouseUp);
   };
 
-  var onError = function (message, url) {
-    window.error(message, url, onSuccess, onError);
-  };
-
   var onSuccess = function (data) {
     similarPins = data;
     renderSimilarPins(mapPinsList, similarPinTemplate, similarPins);
 
-    var lengthBeforeRender = mapPinsList.children.length - similarPins.length;
     for (var i = 0; i < similarPins.length; i++) {
       createListenerForRenderCard(mapPinsList.children[lengthBeforeRender + i], similarPins[i]);
     }
   };
 
+  window.map = {
+    removeSimilarPinsAndCard: function () {
+      if (map.contains(map.querySelector('.popup__close'))) {
+        onPopupCloseClick();
+      }
+      for (var i = mapPinsList.children.length - 1; i >= lengthBeforeRender; i--) {
+        mapPinsList.removeChild(mapPinsList.children[i]);
+      }
+    },
+    returnPinMainToStartPosition: function () {
+      mapPinMain.style.top = pinMainStartY;
+      mapPinMain.style.left = pinMainStartX;
+    }
+  }
+
   window.condition.inactiveStatus();
   setAddressFromMap();
 
-  window.load('https://up.htmlacademy.ru/assets/javascript/demo/8-xhr/unknownfile.json', onSuccess, onError);
-
-  mapPinMain.addEventListener('mousedown', onMapPinMainMousedownFirstTime);
-  mapPinMain.addEventListener('keydown', onMapPinMainEnterFirstTime);
-
   mapPinMain.addEventListener('mousedown', onMapPinMainMousedown);
+  mapPinMain.addEventListener('keydown', onMapPinMainEnter);
 })();
