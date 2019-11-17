@@ -5,7 +5,9 @@
 
   var renderErrorMessage = function (template, message) {
     var fragment = template.content.cloneNode(true);
-    fragment.querySelector('.error__message').textContent = message;
+    if (message) {
+      fragment.querySelector('.error__message').textContent = message;
+    }
     domElementMain.appendChild(fragment);
   };
 
