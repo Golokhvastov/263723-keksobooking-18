@@ -9,7 +9,7 @@
       if (xhr.status === 200) {
         onSuccess(xhr.response);
       } else {
-        onError('Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText, url);
+        onError('Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText, url, onSuccess, onError);
       }
     });
 

@@ -1,12 +1,10 @@
 'use strict';
 (function () {
-  var domElementMain = document.querySelector('main');
   var map = document.querySelector('.map');
   var mapPinMain = document.querySelector('.map__pin--main');
   var mapPinsList = document.querySelector('.map__pins');
   var similarPinTemplate = document.querySelector('#pin');
   var cardTemplate = document.querySelector('#card');
-  var errorTemplate = document.querySelector('#error');
   var similarPins = [];
 
   var renderSimilarPins = function (list, template, pins) {
@@ -148,28 +146,8 @@
     document.addEventListener('mouseup', onMouseUp);
   };
 
-  var renderErrorMessage = function (template, message) {
-    var fragment = template.content.cloneNode(true);
-    fragment.querySelector('.error__message').textContent = message;
-    domElementMain.appendChild(fragment);
-  };
-
-  var onErrorButtonClick = function (url) {
-    domElementMain.removeChild(domElementMain.querySelector('.error'));
-    window.load(url, onSuccess, onError);
-  };
-
   var onError = function (message, url) {
-    renderErrorMessage(errorTemplate, message);
-    var errorButton = document.querySelector('.error__button');
-    errorButton.addEventListener('click', function () {
-      onErrorButtonClick(url);
-    });
-    errorButton.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === window.constant.ENTER_KEYCODE) {
-        onErrorButtonClick(url);
-      }
-    });
+    window.error(message, url, onSuccess, onError);
   };
 
   var onSuccess = function (data) {
@@ -184,6 +162,8 @@
 
   window.condition.inactiveStatus();
   setAddressFromMap();
+
+  window.load('https://up.htmlacademy.ru/assets/javascript/demo/8-xhr/unknownfile.json', onSuccess, onError);
 
   mapPinMain.addEventListener('mousedown', onMapPinMainMousedownFirstTime);
   mapPinMain.addEventListener('keydown', onMapPinMainEnterFirstTime);

@@ -61,4 +61,11 @@
   });
   adFormCapacity.addEventListener('change', onAdFormCapacityOrRoomChange);
   adFormRoomNumber.addEventListener('change', onAdFormCapacityOrRoomChange);
+
+  adForm.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    window.upload(new FormData(adForm), function (response) {
+      adForm.reset();
+    });
+  });
 })();
