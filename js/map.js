@@ -92,8 +92,8 @@
       y: evt.clientY
     };
 
-    var pinCenterX = 0 - window.constant.PIN_MAIN_WIDTH / 2
-    var pinCenterY = window.constant.PIN_MAIN_HEIGHT_ACTIVE / 2
+    var pinCenterX = 0 - window.constant.PIN_MAIN_WIDTH / 2;
+    var pinCenterY = window.constant.PIN_MAIN_HEIGHT_ACTIVE / 2;
     var mapLeft = map.offsetLeft;
     var mapWidth = map.offsetWidth;
     var minY = window.constant.PIN_Y_LIMIT_MIN;
@@ -146,18 +146,18 @@
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
-  }
+  };
 
   var renderErrorMessage = function (template, message) {
     var fragment = template.content.cloneNode(true);
     fragment.querySelector('.error__message').textContent = message;
     domElementMain.appendChild(fragment);
-  }
+  };
 
   var onErrorButtonClick = function (url) {
     domElementMain.removeChild(domElementMain.querySelector('.error'));
     window.load(url, onSuccess, onError);
-  }
+  };
 
   var onError = function (message, url) {
     renderErrorMessage(errorTemplate, message);
@@ -176,7 +176,7 @@
     similarPins = data;
     renderSimilarPins(mapPinsList, similarPinTemplate, similarPins);
 
-    var lengthBeforeRender = mapPinsList.children.length - similarPins.length
+    var lengthBeforeRender = mapPinsList.children.length - similarPins.length;
     for (var i = 0; i < similarPins.length; i++) {
       createListenerForRenderCard(mapPinsList.children[lengthBeforeRender + i], similarPins[i]);
     }
