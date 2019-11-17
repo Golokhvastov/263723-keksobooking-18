@@ -25,6 +25,7 @@
         mapFiltersFieldsets[j].disabled = true;
       }
       isActive = false;
+      window.map.setAddressFromMap();
     },
     activeStatus: function () {
       map.classList.remove('map--faded');

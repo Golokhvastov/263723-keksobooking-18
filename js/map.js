@@ -23,19 +23,6 @@
     list.insertBefore(fragment, document.querySelector('.map__filters-container'));
   };
 
-  var setAddressFromMap = function () {
-    var left = parseInt(mapPinMain.offsetLeft, 10) + Math.round(window.constant.PIN_MAIN_WIDTH / 2);
-    var top = parseInt(mapPinMain.offsetTop, 10);
-    if (map.classList.contains('map--faded')) {
-      top = top + Math.round(window.constant.PIN_MAIN_HEIGHT / 2);
-    } else {
-      top = top + window.constant.PIN_MAIN_HEIGHT_ACTIVE;
-    }
-    var leftString = left + '';
-    var topString = top + '';
-    window.form.setAdFormAddress(leftString + ', ' + topString);
-  };
-
   var onPopupCloseClick = function () {
     map.querySelector('.popup__close').removeEventListener('click', onPopupCloseClick);
     document.removeEventListener('keydown', onPopupEscPress);
@@ -72,7 +59,7 @@
   var activatePage = function () {
     if (!window.condition.isStatusActive()) {
       window.condition.activeStatus();
-      setAddressFromMap();
+      window.map.setAddressFromMap();
 
       window.load('https://js.dump.academy/keksobooking/data', onSuccess, onError);
     }
@@ -136,12 +123,12 @@
         }
       }
 
-      setAddressFromMap();
+      window.map.setAddressFromMap();
     };
 
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
-      setAddressFromMap();
+      window.map.setAddressFromMap();
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
     };
@@ -171,11 +158,23 @@
     returnPinMainToStartPosition: function () {
       mapPinMain.style.top = pinMainStartY;
       mapPinMain.style.left = pinMainStartX;
+      window.map.setAddressFromMap();
+    },
+    setAddressFromMap: function () {
+      var left = parseInt(mapPinMain.offsetLeft, 10) + Math.round(window.constant.PIN_MAIN_WIDTH / 2);
+      var top = parseInt(mapPinMain.offsetTop, 10);
+      if (map.classList.contains('map--faded')) {
+        top = top + Math.round(window.constant.PIN_MAIN_HEIGHT / 2);
+      } else {
+        top = top + window.constant.PIN_MAIN_HEIGHT_ACTIVE;
+      }
+      var leftString = left + '';
+      var topString = top + '';
+      window.form.setAdFormAddress(leftString + ', ' + topString);
     }
   }
 
   window.condition.inactiveStatus();
-  setAddressFromMap();
 
   mapPinMain.addEventListener('mousedown', onMapPinMainMousedown);
   mapPinMain.addEventListener('keydown', onMapPinMainEnter);
