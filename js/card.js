@@ -12,11 +12,11 @@
     if (photos.length === 0) {
       cardElement.querySelector('.popup__photo').remove();
     } else {
-      cardElement.querySelector('.popup__photo').src = 'http://o0.github.io/assets/images/tokyo/hotel' + photos[0] + '.jpg';
+      cardElement.querySelector('.popup__photo').src = photos[0];
       if (photos.length > 1) {
         for (var i = 1; i < photos.length; i++) {
           var popupPhoto = cardElement.querySelector('.popup__photo').cloneNode(true);
-          popupPhoto.src = 'http://o0.github.io/assets/images/tokyo/hotel' + photos[i] + '.jpg';
+          popupPhoto.src = photos[i];
           cardElement.querySelector('.popup__photos').appendChild(popupPhoto);
         }
       }

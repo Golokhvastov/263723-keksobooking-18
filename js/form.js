@@ -10,6 +10,9 @@
   var adFormRoomNumber = adForm.querySelector('#room_number');
   var adFormCapacity = adForm.querySelector('#capacity');
 
+  var domElementMain = document.querySelector('main');
+  var successTemplate = document.querySelector('#success');
+
   var onAdFormTypeChange = function () {
     adFormPrice.min = window.constant.PARAMETERS_FROM_TYPE[adFormType.value].minPrice;
   };
@@ -34,6 +37,27 @@
     }
   };
 
+  var onSuccessClick = function () {
+    domElementMain.removeChild(domElementMain.querySelector('.success'));
+
+    document.removeEventListener('click', onSuccessClick);
+    document.removeEventListener('keydown', onEscPress);
+  };
+
+  var onEscPress = function (evt) {
+    if (evt.keyCode === window.constant.ESC_KEYCODE) {
+      onSuccessClick();
+    }
+  };
+
+  var renderSuccessMessage = function (template) {
+    var fragment = template.content.cloneNode(true);
+    domElementMain.appendChild(fragment);
+
+    document.addEventListener('click', onSuccessClick);
+    document.addEventListener('keydown', onEscPress);
+  };
+
   window.form = {
     setAdFormAddress: function (address) {
       adFormAddress.value = address;
@@ -48,7 +72,7 @@
   adFormTitle.required = true;
   adFormTitle.setAttribute('minlength', '30');
   adFormTitle.setAttribute('maxlength', '100');
-  adFormAddress.disabled = true;
+  adFormAddress.setAttribute('readonly', true);
   adFormPrice.required = true;
   adFormPrice.max = window.constant.PRICE_MAX;
 
@@ -61,4 +85,15 @@
   });
   adFormCapacity.addEventListener('change', onAdFormCapacityOrRoomChange);
   adFormRoomNumber.addEventListener('change', onAdFormCapacityOrRoomChange);
+
+  adForm.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    window.upload(new FormData(adForm), function () {
+      renderSuccessMessage(successTemplate);
+      adForm.reset();
+      window.map.removeSimilarPinsAndCard();
+      window.map.returnPinMainToStartPosition();
+      window.condition.inactiveStatus();
+    });
+  });
 })();
