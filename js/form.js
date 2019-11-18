@@ -62,6 +62,7 @@
   };
 
   var resetPage = function () {
+    window.debounce();
     adForm.reset();
     filtersForm.reset();
     window.map.removeCard();

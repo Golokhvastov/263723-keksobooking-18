@@ -1,6 +1,7 @@
 'use strict';
 window.constant = {
   MAX_SIMILAR_PINS_IN_MAP: 5,
+  DEBOUNCE_INTERVAL: 500,
 
   PIN_Y_LIMIT_MIN: 130,
   PIN_Y_LIMIT_MAX: 630,

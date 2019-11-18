@@ -5,6 +5,14 @@
   window.filters = function (similarPins) {
     var filteredPins = similarPins.slice();
 
+    filteredPins = filteredPins.filter(function (pin) {
+      return pin.offer !== undefined && pin.location !== undefined;
+    });
+
+    filteredPins = filteredPins.filter(function (pin) {
+      return pin.location.x !== undefined && pin.location.y !== undefined;
+    });
+
     var typeFilterValue = filtersForm.querySelector('#housing-type').value;
     if (typeFilterValue !== 'any') {
       filteredPins = filteredPins.filter(function (pin) {
