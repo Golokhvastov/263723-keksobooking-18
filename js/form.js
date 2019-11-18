@@ -1,6 +1,7 @@
 'use strict';
 (function () {
   var adForm = document.querySelector('.ad-form');
+
   var adFormTitle = adForm.querySelector('#title');
   var adFormAddress = adForm.querySelector('#address');
   var adFormType = adForm.querySelector('#type');
@@ -12,6 +13,8 @@
 
   var domElementMain = document.querySelector('main');
   var successTemplate = document.querySelector('#success');
+
+  var filtersForm = document.querySelector('.map__filters');
 
   var onAdFormTypeChange = function () {
     adFormPrice.min = window.constant.PARAMETERS_FROM_TYPE[adFormType.value].minPrice;
@@ -58,13 +61,20 @@
     document.addEventListener('keydown', onEscPress);
   };
 
+  var resetPage = function () {
+    adForm.reset();
+    filtersForm.reset();
+    window.map.removeCard();
+    window.map.removeSimilarPins();
+    window.map.returnPinMainToStartPosition();
+    window.condition.inactiveStatus();
+  }
+
   window.form = {
     setAdFormAddress: function (address) {
       adFormAddress.value = address;
     }
   };
-
-  adForm.setAttribute('action', 'https://js.dump.academy/keksobooking');
 
   onAdFormCapacityOrRoomChange();
   onAdFormTypeChange();
@@ -90,10 +100,11 @@
     evt.preventDefault();
     window.upload(new FormData(adForm), function () {
       renderSuccessMessage(successTemplate);
-      adForm.reset();
-      window.map.removeSimilarPinsAndCard();
-      window.map.returnPinMainToStartPosition();
-      window.condition.inactiveStatus();
+      resetPage();
     });
+  });
+  adForm.addEventListener('reset', function (evt) {
+    evt.preventDefault();
+    resetPage();
   });
 })();

@@ -10,22 +10,35 @@
   var pinMainStartY = mapPinMain.style.top;
   var pinMainStartX = mapPinMain.style.left;
 
-  var renderSimilarPins = function (list, template, pins) {
+  var filtersForm = document.querySelector('.map__filters');
+
+  var renderPins = function (pins) {
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < pins.length; i++) {
-      fragment.appendChild(window.pin.createPinElement(template, pins[i]));
+      fragment.appendChild(window.pin.createPinElement(similarPinTemplate, pins[i]));
     }
-    list.appendChild(fragment);
+    mapPinsList.appendChild(fragment);
+  }
+
+  var renderSimilarPins = function () {
+    var filteredPins = window.filters(similarPins);
+
+    renderPins(filteredPins);
+
+    for (var i = 0; i < filteredPins.length; i++) {
+      createListenerForRenderCard(mapPinsList.children[lengthBeforeRender + i], filteredPins[i]);
+    }
   };
 
-  var renderCard = function (list, template, card) {
-    var fragment = window.card.createCardElement(template, card);
-    list.insertBefore(fragment, document.querySelector('.map__filters-container'));
+  var renderCard = function (pin) {
+    var fragment = window.card.createCardElement(cardTemplate, pin);
+    map.insertBefore(fragment, document.querySelector('.map__filters-container'));
   };
 
   var onPopupCloseClick = function () {
     map.querySelector('.popup__close').removeEventListener('click', onPopupCloseClick);
     document.removeEventListener('keydown', onPopupEscPress);
+
     map.removeChild(map.querySelector('.map__card'));
   };
 
@@ -36,10 +49,8 @@
   };
 
   var onMapSimilarPinClick = function (similarPin) {
-    if (map.contains(map.querySelector('.popup__close'))) {
-      onPopupCloseClick();
-    }
-    renderCard(map, cardTemplate, similarPin);
+    window.map.removeCard();
+    renderCard(similarPin);
 
     map.querySelector('.popup__close').addEventListener('click', onPopupCloseClick);
     document.addEventListener('keydown', onPopupEscPress);
@@ -139,18 +150,16 @@
 
   var onSuccess = function (data) {
     similarPins = data;
-    renderSimilarPins(mapPinsList, similarPinTemplate, similarPins);
-
-    for (var i = 0; i < similarPins.length; i++) {
-      createListenerForRenderCard(mapPinsList.children[lengthBeforeRender + i], similarPins[i]);
-    }
+    renderSimilarPins();
   };
 
   window.map = {
-    removeSimilarPinsAndCard: function () {
+    removeCard: function () {
       if (map.contains(map.querySelector('.popup__close'))) {
         onPopupCloseClick();
       }
+    },
+    removeSimilarPins: function () {
       for (var i = mapPinsList.children.length - 1; i >= lengthBeforeRender; i--) {
         mapPinsList.removeChild(mapPinsList.children[i]);
       }
@@ -171,6 +180,11 @@
       var leftString = left + '';
       var topString = top + '';
       window.form.setAdFormAddress(leftString + ', ' + topString);
+    },
+    onFiltersChange: function () {
+      window.map.removeSimilarPins();
+
+      renderSimilarPins();
     }
   };
 
