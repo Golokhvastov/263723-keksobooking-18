@@ -31,7 +31,7 @@
     } else {
       domElement.remove();
     }
-  }
+  };
 
   window.card = {
     createCardElement: function (template, card) {

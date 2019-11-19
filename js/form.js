@@ -21,7 +21,7 @@
   };
 
   var isRoomsEnough = function () {
-    var validCapacity = window.Constant.ROOMS_CAPACITY[adFormRoomNumber.value];
+    var validCapacity = window.Constant.ROOMS_CAPACITIES[adFormRoomNumber.value];
     for (var i = 0; i < validCapacity.length; i++) {
       if (adFormCapacity.value === validCapacity[i]) {
         return true;
@@ -66,7 +66,7 @@
     window.map.removeSimilarPins();
     window.map.returnPinMainToStartPosition();
     window.condition.inactiveStatus();
-  }
+  };
 
   window.form = {
     setAdFormAddress: function (address) {
@@ -98,10 +98,10 @@
     evt.preventDefault();
     window.upload(new FormData(adForm), function () {
       renderSuccessMessage(successTemplate);
-      resetPage();
+      adForm.reset();
     });
   });
-  adForm.addEventListener('reset', function (evt) {
+  adForm.addEventListener('reset', function () {
     resetPage();
   });
 })();

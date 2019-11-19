@@ -10,15 +10,13 @@
   var pinMainStartY = mapPinMain.style.top;
   var pinMainStartX = mapPinMain.style.left;
 
-  var filtersForm = document.querySelector('.map__filters');
-
   var renderPins = function (pins) {
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < pins.length; i++) {
       fragment.appendChild(window.pin.createPinElement(similarPinTemplate, pins[i]));
     }
     mapPinsList.appendChild(fragment);
-  }
+  };
 
   var renderSimilarPins = function () {
     var filteredPins = window.filters(similarPins);
@@ -48,7 +46,7 @@
 
   var onMapSimilarPinClick = function (pinDomElement, similarPin) {
     window.map.removeCard();
-    renderCard(similarPin)
+    renderCard(similarPin);
 
     for (var i = 0; i < mapPinsList.children.length; i++) {
       mapPinsList.children[i].classList.remove('.map__pin--active');

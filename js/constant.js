@@ -38,11 +38,27 @@
     },
 
     PRICE_MAX: 1000000,
-    ROOMS_CAPACITY: {
+    ROOMS_CAPACITIES: {
       '1': ['1'],
       '2': ['1', '2'],
       '3': ['1', '2', '3'],
       '100': ['0']
+    },
+
+    PRICE_RANGE: {
+      LOW: {
+        VALUE_OF_FILTER: 'low',
+        MAX_PRICE: 10000
+      },
+      MIDDLE: {
+        VALUE_OF_FILTER: 'middle',
+        MIN_PRICE: 10000,
+        MAX_PRICE: 50000
+      },
+      HIGH: {
+        VALUE_OF_FILTER: 'high',
+        MIN_PRICE: 50000
+      }
     }
   };
 
