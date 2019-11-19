@@ -1,9 +1,9 @@
 'use strict';
 (function () {
   var removeExcessiveFeatures = function (cardElement, features) {
-    for (var i = 0; i < window.constant.FEATURES.length; i++) {
-      if (!features.includes(window.constant.FEATURES[i])) {
-        cardElement.querySelector('.popup__feature--' + window.constant.FEATURES[i]).remove();
+    for (var i = 0; i < window.Constant.FEATURES.length; i++) {
+      if (!features.includes(window.Constant.FEATURES[i])) {
+        cardElement.querySelector('.popup__feature--' + window.Constant.FEATURES[i]).remove();
       }
     }
   };
@@ -17,19 +17,19 @@
       cardElementPhoto.src = photos[0];
       if (photos.length > 1) {
         for (var i = 1; i < photos.length; i++) {
-          var cloneCardElementPhoto = cardElementPhoto.cloneNode(true);
-          cloneCardElementPhoto.src = photos[i];
-          cardElement.querySelector('.popup__photos').appendChild(cloneCardElementPhoto);
+          var cloneOfCardElementPhoto = cardElementPhoto.cloneNode(true);
+          cloneOfCardElementPhoto.src = photos[i];
+          cardElement.querySelector('.popup__photos').appendChild(cloneOfCardElementPhoto);
         }
       }
     }
   };
 
-  var executeIfPropertyExist = function (domElem, property, action) {
+  var executeIfPropertyExist = function (domElement, property, action) {
     if (property !== undefined) {
       action();
     } else {
-      domElem.remove();
+      domElement.remove();
     }
   }
 
@@ -37,59 +37,59 @@
     createCardElement: function (template, card) {
       var cardElement = template.content.cloneNode(true);
 
-      var domElem = cardElement.querySelector('.popup__title');
-      executeIfPropertyExist(domElem, card.offer.title, function () {
-        domElem.textContent = card.offer.title;
+      var domElement = cardElement.querySelector('.popup__title');
+      executeIfPropertyExist(domElement, card.offer.title, function () {
+        domElement.textContent = card.offer.title;
       });
 
-      domElem = cardElement.querySelector('.popup__text--address');
-      executeIfPropertyExist(domElem, card.offer.address, function () {
-        domElem.textContent = card.offer.address;
+      domElement = cardElement.querySelector('.popup__text--address');
+      executeIfPropertyExist(domElement, card.offer.address, function () {
+        domElement.textContent = card.offer.address;
       });
 
-      domElem = cardElement.querySelector('.popup__text--price');
-      executeIfPropertyExist(domElem, card.offer.price, function () {
-        domElem.textContent = card.offer.price + '₽/ночь';
+      domElement = cardElement.querySelector('.popup__text--price');
+      executeIfPropertyExist(domElement, card.offer.price, function () {
+        domElement.textContent = card.offer.price + '₽/ночь';
       });
 
-      domElem = cardElement.querySelector('.popup__type');
-      executeIfPropertyExist(domElem, card.offer.type, function () {
-        domElem.textContent = window.constant.PARAMETERS_FROM_TYPE[card.offer.type].typeRus;
+      domElement = cardElement.querySelector('.popup__type');
+      executeIfPropertyExist(domElement, card.offer.type, function () {
+        domElement.textContent = window.Constant.PARAMETER_FROM_TYPE[card.offer.type].TYPE_RUS;
       });
 
-      domElem = cardElement.querySelector('.popup__text--capacity');
-      executeIfPropertyExist(domElem, card.offer.rooms, function () {
-        executeIfPropertyExist(domElem, card.offer.guests, function () {
-          domElem.textContent = card.offer.rooms + ' комнаты для ' + card.offer.guests + ' гостей';
+      domElement = cardElement.querySelector('.popup__text--capacity');
+      executeIfPropertyExist(domElement, card.offer.rooms, function () {
+        executeIfPropertyExist(domElement, card.offer.guests, function () {
+          domElement.textContent = card.offer.rooms + ' комнаты для ' + card.offer.guests + ' гостей';
         });
       });
 
-      domElem = cardElement.querySelector('.popup__text--time');
-      executeIfPropertyExist(domElem, card.offer.checkin, function () {
-        executeIfPropertyExist(domElem, card.offer.checkout, function () {
-          domElem.textContent = 'Заезд после ' + card.offer.checkin + ', выезд до ' + card.offer.checkout;
+      domElement = cardElement.querySelector('.popup__text--time');
+      executeIfPropertyExist(domElement, card.offer.checkin, function () {
+        executeIfPropertyExist(domElement, card.offer.checkout, function () {
+          domElement.textContent = 'Заезд после ' + card.offer.checkin + ', выезд до ' + card.offer.checkout;
         });
       });
 
-      domElem = cardElement.querySelector('.popup__features');
-      executeIfPropertyExist(domElem, card.offer.features, function () {
+      domElement = cardElement.querySelector('.popup__features');
+      executeIfPropertyExist(domElement, card.offer.features, function () {
         removeExcessiveFeatures(cardElement, card.offer.features);
       });
 
-      domElem = cardElement.querySelector('.popup__description');
-      executeIfPropertyExist(domElem, card.offer.description, function () {
-        domElem.textContent = card.offer.description;
+      domElement = cardElement.querySelector('.popup__description');
+      executeIfPropertyExist(domElement, card.offer.description, function () {
+        domElement.textContent = card.offer.description;
       });
 
-      domElem = cardElement.querySelector('.popup__photos');
-      executeIfPropertyExist(domElem, card.offer.photos, function () {
+      domElement = cardElement.querySelector('.popup__photos');
+      executeIfPropertyExist(domElement, card.offer.photos, function () {
         createCardPhotos(cardElement, card.offer.photos);
       });
 
-      domElem = cardElement.querySelector('.popup__avatar');
-      executeIfPropertyExist(domElem, card.author, function () {
-        executeIfPropertyExist(domElem, card.author.avatar, function () {
-          domElem.src = card.author.avatar;
+      domElement = cardElement.querySelector('.popup__avatar');
+      executeIfPropertyExist(domElement, card.author, function () {
+        executeIfPropertyExist(domElement, card.author.avatar, function () {
+          domElement.src = card.author.avatar;
         });
       });
 

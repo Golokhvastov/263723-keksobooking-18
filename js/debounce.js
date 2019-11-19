@@ -5,6 +5,6 @@
     if (lastTimeout) {
       window.clearTimeout(lastTimeout);
     }
-    lastTimeout = window.setTimeout(cb, window.constant.DEBOUNCE_INTERVAL);
+    lastTimeout = window.setTimeout(cb, window.Constant.DEBOUNCE_INTERVAL);
   }
 })();

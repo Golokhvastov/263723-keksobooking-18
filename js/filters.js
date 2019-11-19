@@ -6,12 +6,9 @@
     var filteredPins = similarPins.slice();
 
     filteredPins = filteredPins.filter(function (pin) {
-      return pin.offer !== undefined && pin.location !== undefined;
+      return pin.offer !== undefined && pin.location !== undefined && pin.location.x !== undefined && pin.location.y !== undefined;
     });
 
-    filteredPins = filteredPins.filter(function (pin) {
-      return pin.location.x !== undefined && pin.location.y !== undefined;
-    });
 
     var typeFilterValue = filtersForm.querySelector('#housing-type').value;
     if (typeFilterValue !== 'any') {
@@ -37,28 +34,28 @@
     var roomsFilterValue = filtersForm.querySelector('#housing-rooms').value;
     if (roomsFilterValue !== 'any') {
       filteredPins = filteredPins.filter(function (pin) {
-        return pin.offer.rooms == roomsFilterValue;
+        return (pin.offer.rooms + '') === roomsFilterValue;
       })
     }
 
     var guestsFilterValue = filtersForm.querySelector('#housing-guests').value;
     if (guestsFilterValue !== 'any') {
       filteredPins = filteredPins.filter(function (pin) {
-        return pin.offer.guests == guestsFilterValue;
+        return (pin.offer.guests + '') === guestsFilterValue;
       })
     }
 
-    var featuresCheckbox = filtersForm.querySelectorAll('.map__features  .map__checkbox');
-    for (var i = 0; i < featuresCheckbox.length; i++) {
-      if (featuresCheckbox[i].checked) {
+    var featuresCheckboxs = filtersForm.querySelectorAll('.map__features  .map__checkbox');
+    for (var i = 0; i < featuresCheckboxs.length; i++) {
+      if (featuresCheckboxs[i].checked) {
         filteredPins = filteredPins.filter(function (pin) {
-          return pin.offer.features.includes(featuresCheckbox[i].value);
+          return pin.offer.features.includes(featuresCheckboxs[i].value);
         })
       }
     }
 
-    if (filteredPins.length > window.constant.MAX_SIMILAR_PINS_IN_MAP) {
-      filteredPins = filteredPins.slice(0, window.constant.MAX_SIMILAR_PINS_IN_MAP);
+    if (filteredPins.length > window.Constant.MAX_SIMILAR_PINS_IN_MAP) {
+      filteredPins = filteredPins.slice(0, window.Constant.MAX_SIMILAR_PINS_IN_MAP);
     }
 
     return filteredPins;

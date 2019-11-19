@@ -25,13 +25,13 @@
       offer: {
         title: 'заголовок предложения ' + avatarNumber,
         address: locationX + ', ' + locationY,
-        price: window.util.getRandomInt(PRICE_MIN, window.constant.PRICE_MAX),
+        price: window.util.getRandomInt(PRICE_MIN, window.Constant.PRICE_MAX),
         type: TYPES[window.util.getRandomInt(0, TYPES.length - 1)],
         rooms: window.util.getRandomInt(ROOMS_MIN, ROOMS_MAX),
         guests: window.util.getRandomInt(GUESTS_MIN, GUESTS_MAX),
         checkin: CHECK_INS[window.util.getRandomInt(0, CHECK_INS.length - 1)],
         checkout: CHECK_OUTS[window.util.getRandomInt(0, CHECK_OUTS.length - 1)],
-        features: window.util.getRandomArrayPart(window.constant.FEATURES),
+        features: window.util.getRandomArrayPart(window.Constant.FEATURES),
         description: 'строка с описанием ' + avatarNumber,
         photos: window.util.getRandomArrayPart(window.util.getArrayUniqueNumbers(1, PHOTOS, PHOTOS))
       },

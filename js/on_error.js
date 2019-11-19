@@ -14,14 +14,20 @@
   var onErrorClick = function () {
     domElementMain.removeChild(domElementMain.querySelector('.error'));
 
+    var errorButton = document.querySelector('.error__button');
+
+    errorButton.removeEventListener('click', onErrorClick);
+    errorButton.removeEventListener('keydown', onErrorButtonEnterPress);
     document.removeEventListener('click', onErrorClick);
     document.removeEventListener('keydown', onEscPress);
   };
 
   var onEscPress = function (evt) {
-    if (evt.keyCode === window.constant.ESC_KEYCODE) {
-      onErrorClick();
-    }
+    window.util.isEscEvent(evt, onErrorClick);
+  };
+
+  var onErrorButtonEnterPress = function (evt) {
+    window.util.isEnterEvent(evt, onErrorClick);
   };
 
   window.onError = function (message) {
@@ -30,11 +36,7 @@
     var errorButton = document.querySelector('.error__button');
 
     errorButton.addEventListener('click', onErrorClick);
-    errorButton.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === window.constant.ENTER_KEYCODE) {
-        onErrorClick();
-      }
-    });
+    errorButton.addEventListener('keydown', onErrorButtonEnterPress);
     document.addEventListener('click', onErrorClick);
     document.addEventListener('keydown', onEscPress);
   };

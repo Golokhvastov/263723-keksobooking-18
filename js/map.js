@@ -35,17 +35,15 @@
     map.insertBefore(fragment, document.querySelector('.map__filters-container'));
   };
 
-  var onPopupCloseClick = function () {
-    map.querySelector('.popup__close').removeEventListener('click', onPopupCloseClick);
-    document.removeEventListener('keydown', onPopupEscPress);
+  var onCardCloseClick = function () {
+    map.querySelector('.popup__close').removeEventListener('click', onCardCloseClick);
+    document.removeEventListener('keydown', onCardEscPress);
 
     map.removeChild(map.querySelector('.map__card'));
   };
 
-  var onPopupEscPress = function (evt) {
-    if (evt.keyCode === window.constant.ESC_KEYCODE) {
-      onPopupCloseClick();
-    }
+  var onCardEscPress = function (evt) {
+    window.util.isEscEvent(evt, onCardCloseClick);
   };
 
   var onMapSimilarPinClick = function (pinDomElement, similarPin) {
@@ -57,8 +55,8 @@
     }
     pinDomElement.classList.add('.map__pin--active');
 
-    map.querySelector('.popup__close').addEventListener('click', onPopupCloseClick);
-    document.addEventListener('keydown', onPopupEscPress);
+    map.querySelector('.popup__close').addEventListener('click', onCardCloseClick);
+    document.addEventListener('keydown', onCardEscPress);
   };
 
   var createListenerForRenderCard = function (pinDomElement, similarPin) {
@@ -66,7 +64,7 @@
       onMapSimilarPinClick(pinDomElement, similarPin);
     });
     pinDomElement.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === window.constant.ENTER_KEYCODE) {
+      if (evt.keyCode === window.Constant.ENTER_KEYCODE) {
         onMapSimilarPinClick(pinDomElement, similarPin);
       }
     });
@@ -81,10 +79,8 @@
     }
   };
 
-  var onMapPinMainEnter = function (evt) {
-    if (evt.keyCode === window.constant.ENTER_KEYCODE) {
-      activatePage();
-    }
+  var onMapPinMainEnterPress = function (evt) {
+    window.util.isEnterEvent(evt, activatePage);
   };
 
   var onMapPinMainMousedown = function (evt) {
@@ -97,12 +93,12 @@
       y: evt.clientY
     };
 
-    var pinCenterX = 0 - window.constant.PIN_MAIN_WIDTH / 2;
-    var pinCenterY = window.constant.PIN_MAIN_HEIGHT_ACTIVE / 2;
+    var pinCenterX = 0 - window.Constant.PIN_MAIN_WIDTH / 2;
+    var pinCenterY = window.Constant.PIN_MAIN_HEIGHT_ACTIVE / 2;
     var mapLeft = map.offsetLeft;
     var mapWidth = map.offsetWidth;
-    var minY = window.constant.PIN_Y_LIMIT_MIN;
-    var maxY = window.constant.PIN_Y_LIMIT_MAX;
+    var minY = window.Constant.PIN_Y_LIMIT_MIN;
+    var maxY = window.Constant.PIN_Y_LIMIT_MAX;
 
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
@@ -162,12 +158,14 @@
   window.map = {
     removeCard: function () {
       if (map.contains(map.querySelector('.popup__close'))) {
-        onPopupCloseClick();
+        onCardCloseClick();
       }
     },
     removeSimilarPins: function () {
-      for (var i = mapPinsList.children.length - 1; i >= lengthBeforeRender; i--) {
-        mapPinsList.removeChild(mapPinsList.children[i]);
+      if (mapPinsList.children.length > lengthBeforeRender) {
+        for (var i = mapPinsList.children.length - 1; i >= lengthBeforeRender; i--) {
+          mapPinsList.removeChild(mapPinsList.children[i]);
+        }
       }
     },
     returnPinMainToStartPosition: function () {
@@ -176,12 +174,12 @@
       window.map.setAddressFromMap();
     },
     setAddressFromMap: function () {
-      var left = parseInt(mapPinMain.offsetLeft, 10) + Math.round(window.constant.PIN_MAIN_WIDTH / 2);
+      var left = parseInt(mapPinMain.offsetLeft, 10) + Math.round(window.Constant.PIN_MAIN_WIDTH / 2);
       var top = parseInt(mapPinMain.offsetTop, 10);
       if (map.classList.contains('map--faded')) {
-        top = top + Math.round(window.constant.PIN_MAIN_HEIGHT / 2);
+        top = top + Math.round(window.Constant.PIN_MAIN_HEIGHT / 2);
       } else {
-        top = top + window.constant.PIN_MAIN_HEIGHT_ACTIVE;
+        top = top + window.Constant.PIN_MAIN_HEIGHT_ACTIVE;
       }
       var leftString = left + '';
       var topString = top + '';
@@ -200,5 +198,5 @@
   window.condition.inactiveStatus();
 
   mapPinMain.addEventListener('mousedown', onMapPinMainMousedown);
-  mapPinMain.addEventListener('keydown', onMapPinMainEnter);
+  mapPinMain.addEventListener('keydown', onMapPinMainEnterPress);
 })();
