@@ -1,15 +1,16 @@
 'use strict';
 (function () {
   var removeExcessiveFeatures = function (cardElement, features) {
-    for (var i = 0; i < window.Constant.FEATURES.length; i++) {
-      if (!features.includes(window.Constant.FEATURES[i])) {
-        cardElement.querySelector('.popup__feature--' + window.Constant.FEATURES[i]).remove();
+    window.Constant.FEATURES.forEach(function (feature) {
+      if (!features.includes(feature)) {
+        cardElement.querySelector('.popup__feature--' + feature).remove();
       }
-    }
+    });
   };
 
   var createCardPhotos = function (cardElement, photos) {
     var cardElementPhoto = cardElement.querySelector('.popup__photo');
+    var cardElementPhotos = cardElement.querySelector('.popup__photos');
 
     if (photos.length === 0) {
       cardElementPhoto.remove();
@@ -19,7 +20,7 @@
         for (var i = 1; i < photos.length; i++) {
           var cloneOfCardElementPhoto = cardElementPhoto.cloneNode(true);
           cloneOfCardElementPhoto.src = photos[i];
-          cardElement.querySelector('.popup__photos').appendChild(cloneOfCardElementPhoto);
+          cardElementPhotos.appendChild(cloneOfCardElementPhoto);
         }
       }
     }

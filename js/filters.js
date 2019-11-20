@@ -48,13 +48,13 @@
     }
 
     var featuresCheckboxs = filtersForm.querySelectorAll('.map__features  .map__checkbox');
-    for (var i = 0; i < featuresCheckboxs.length; i++) {
-      if (featuresCheckboxs[i].checked) {
+    featuresCheckboxs.forEach(function (featuresCheckbox) {
+      if (featuresCheckbox.checked) {
         filteredPins = filteredPins.filter(function (pin) {
-          return pin.offer.features.includes(featuresCheckboxs[i].value);
+          return pin.offer.features.includes(featuresCheckbox.value);
         });
       }
-    }
+    });
 
     if (filteredPins.length > window.Constant.MAX_SIMILAR_PINS_IN_MAP) {
       filteredPins = filteredPins.slice(0, window.Constant.MAX_SIMILAR_PINS_IN_MAP);

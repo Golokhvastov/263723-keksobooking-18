@@ -76,6 +76,8 @@
   var resetPage = function () {
     window.debounce();
     adForm.reset();
+    window.avatar.clear();
+    window.photos.clear();
     filtersForm.reset();
     window.map.removeCard();
     window.map.removeSimilarPins();

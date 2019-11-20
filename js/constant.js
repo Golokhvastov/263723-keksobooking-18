@@ -7,6 +7,8 @@
     URL_FOR_LOAD_PINS_DATA: 'https://js.dump.academy/keksobooking/data',
     URL_FOR_SEND_AD_FORM_DATA: 'https://js.dump.academy/keksobooking',
 
+    PHOTO_TYPES: ['gif', 'jpg', 'jpeg', 'png'],
+
     MAX_SIMILAR_PINS_IN_MAP: 5,
     DEBOUNCE_INTERVAL: 500,
 

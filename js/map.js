@@ -10,11 +10,14 @@
   var pinMainStartY = mapPinMain.style.top;
   var pinMainStartX = mapPinMain.style.left;
 
+  var mapFiltersContainer = document.querySelector('.map__filters-container')
+  var popupCloseButton;
+
   var renderPins = function (pins) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < pins.length; i++) {
-      fragment.appendChild(window.pin.create(similarPinTemplate, pins[i]));
-    }
+    pins.forEach(function (pin) {
+      fragment.appendChild(window.pin.create(similarPinTemplate, pin));
+    });
     mapPinsList.appendChild(fragment);
   };
 
@@ -23,18 +26,18 @@
 
     renderPins(filteredPins);
 
-    for (var i = 0; i < filteredPins.length; i++) {
-      createListenerForRenderCard(mapPinsList.children[lengthBeforeRender + i], filteredPins[i]);
-    }
+    filteredPins.forEach(function (pin, i) {
+      createListenerForRenderCard(mapPinsList.children[lengthBeforeRender + i], pin);
+    });
   };
 
   var renderCard = function (pin) {
     var fragment = window.card.create(cardTemplate, pin);
-    map.insertBefore(fragment, document.querySelector('.map__filters-container'));
+    map.insertBefore(fragment, mapFiltersContainer);
   };
 
   var onCardCloseClick = function () {
-    map.querySelector('.popup__close').removeEventListener('click', onCardCloseClick);
+    popupCloseButton.removeEventListener('click', onCardCloseClick);
     document.removeEventListener('keydown', onCardEscPress);
 
     map.removeChild(map.querySelector('.map__card'));
@@ -53,7 +56,8 @@
     }
     pinDomElement.classList.add('.map__pin--active');
 
-    map.querySelector('.popup__close').addEventListener('click', onCardCloseClick);
+    popupCloseButton = map.querySelector('.popup__close');
+    popupCloseButton.addEventListener('click', onCardCloseClick);
     document.addEventListener('keydown', onCardEscPress);
   };
 
@@ -157,7 +161,7 @@
 
   window.map = {
     removeCard: function () {
-      if (map.contains(map.querySelector('.popup__close'))) {
+      if (map.contains(popupCloseButton)) {
         onCardCloseClick();
       }
     },

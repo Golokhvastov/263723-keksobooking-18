@@ -18,27 +18,27 @@
       if (!adForm.classList.contains('ad-form--disabled')) {
         adForm.classList.add('ad-form--disabled');
       }
-      for (var i = 0; i < adFormFieldsets.length; i++) {
-        adFormFieldsets[i].disabled = true;
-      }
-      for (var j = 0; j < mapFiltersFieldsets.length; j++) {
-        mapFiltersFieldsets[j].disabled = true;
-      }
+      adFormFieldsets.forEach(function (fieldset) {
+        fieldset.disabled = true;
+      });
+      mapFiltersFieldsets.forEach(function (fieldset) {
+        fieldset.disabled = true;
+      });
       isActive = false;
       window.map.setAddressToAdForm();
     },
     activatePage: function () {
       map.classList.remove('map--faded');
       adForm.classList.remove('ad-form--disabled');
-      for (var i = 0; i < adFormFieldsets.length; i++) {
-        adFormFieldsets[i].disabled = false;
-      }
+      adFormFieldsets.forEach(function (fieldset) {
+        fieldset.disabled = false;
+      });
       isActive = true;
     },
     activateFiltersForm: function () {
-      for (var j = 0; j < mapFiltersFieldsets.length; j++) {
-        mapFiltersFieldsets[j].disabled = false;
-      }
+      mapFiltersFieldsets.forEach(function (fieldset) {
+        fieldset.disabled = false;
+      });
     }
   };
 })();
