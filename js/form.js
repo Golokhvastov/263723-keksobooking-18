@@ -78,6 +78,7 @@
     adForm.reset();
     window.avatar.clear();
     window.photos.clear();
+    onAdFormTypeChange();
     filtersForm.reset();
     window.map.removeCard();
     window.map.removeSimilarPins();
