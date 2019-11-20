@@ -47,14 +47,14 @@
         reader.readAsDataURL(file);
       }
     }
-  }
+  };
 
   window.photos = {
     clear: function () {
       deleteOldPhotos();
       preview.style.backgroundImage = 'none';
     }
-  }
+  };
 
   fileChooser.setAttribute('multiple', 'true');
 
@@ -74,7 +74,7 @@
   }, false);
   dropArea.addEventListener('drop', function (evt) {
     evt.preventDefault();
-    var dt = evt.dataTransfer
+    var dt = evt.dataTransfer;
     var files = dt.files;
     createPreviewForPhotos(files);
   }, false);

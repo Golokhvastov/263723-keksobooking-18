@@ -22,14 +22,14 @@
 
       reader.readAsDataURL(file);
     }
-  }
+  };
 
   window.avatar = {
     clear: function () {
       preview.querySelector('img').style.zIndex = 'auto';
       preview.style.backgroundImage = 'none';
     }
-  }
+  };
 
   fileChooser.addEventListener('change', function () {
     createPreviewForAvatar(fileChooser.files);
@@ -47,7 +47,7 @@
   }, false);
   dropArea.addEventListener('drop', function (evt) {
     evt.preventDefault();
-    var dt = evt.dataTransfer
+    var dt = evt.dataTransfer;
     var files = dt.files;
     createPreviewForAvatar(files);
   }, false);

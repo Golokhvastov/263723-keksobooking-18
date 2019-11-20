@@ -10,7 +10,7 @@
   var pinMainStartY = mapPinMain.style.top;
   var pinMainStartX = mapPinMain.style.left;
 
-  var mapFiltersContainer = document.querySelector('.map__filters-container')
+  var mapFiltersContainer = document.querySelector('.map__filters-container');
   var popupCloseButton;
 
   var renderPins = function (pins) {

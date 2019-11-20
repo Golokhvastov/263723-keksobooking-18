@@ -42,7 +42,7 @@
     }
 
     return result;
-  }
+  };
 
   var onAdFormCapacityOrRoomChange = function () {
     var validCapacities = window.Constant.ROOMS_CAPACITIES[adFormRoomNumber.value];
