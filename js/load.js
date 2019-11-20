@@ -6,7 +6,7 @@
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
-      if (xhr.status === 200) {
+      if (xhr.status === window.Constant.XHR_STATUS_OK) {
         onSuccess(xhr.response);
       } else {
         onError('Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText);
@@ -21,7 +21,7 @@
       onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
 
-    xhr.timeout = 10000;
+    xhr.timeout = window.Constant.XHR_TIMEOUT_MS;
 
     xhr.open('GET', url);
     xhr.send();

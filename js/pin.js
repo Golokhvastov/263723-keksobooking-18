@@ -1,7 +1,7 @@
 'use strict';
 (function () {
   window.pin = {
-    createPinElement: function (template, pin) {
+    create: function (template, pin) {
       var pinElement = template.content.cloneNode(true);
       var locX = pin.location.x - (window.Constant.PIN_WIDTH / 2);
       var locY = pin.location.y - window.Constant.PIN_HEIGHT;

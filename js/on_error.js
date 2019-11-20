@@ -14,10 +14,6 @@
   var onErrorClick = function () {
     domElementMain.removeChild(domElementMain.querySelector('.error'));
 
-    var errorButton = document.querySelector('.error__button');
-
-    errorButton.removeEventListener('click', onErrorClick);
-    errorButton.removeEventListener('keydown', onErrorButtonEnterPress);
     document.removeEventListener('click', onErrorClick);
     document.removeEventListener('keydown', onEscPress);
   };
@@ -34,8 +30,8 @@
     renderErrorMessage(errorTemplate, message);
 
     var errorButton = document.querySelector('.error__button');
+    errorButton.focus();
 
-    errorButton.addEventListener('click', onErrorClick);
     errorButton.addEventListener('keydown', onErrorButtonEnterPress);
     document.addEventListener('click', onErrorClick);
     document.addEventListener('keydown', onEscPress);

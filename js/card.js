@@ -34,7 +34,7 @@
   };
 
   window.card = {
-    createCardElement: function (template, card) {
+    create: function (template, card) {
       var cardElement = template.content.cloneNode(true);
 
       var domElement = cardElement.querySelector('.popup__title');

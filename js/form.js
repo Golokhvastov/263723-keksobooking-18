@@ -11,6 +11,8 @@
   var adFormRoomNumber = adForm.querySelector('#room_number');
   var adFormCapacity = adForm.querySelector('#capacity');
 
+  var adFormButtonReset = adForm.querySelector('.ad-form__reset');
+
   var domElementMain = document.querySelector('main');
   var successTemplate = document.querySelector('#success');
 
@@ -18,25 +20,37 @@
 
   var onAdFormTypeChange = function () {
     adFormPrice.min = window.Constant.PARAMETER_FROM_TYPE[adFormType.value].MIN_PRICE;
+    adFormPrice.placeholder = window.Constant.PARAMETER_FROM_TYPE[adFormType.value].MIN_PRICE;
   };
 
-  var isRoomsEnough = function () {
-    var validCapacity = window.Constant.ROOMS_CAPACITIES[adFormRoomNumber.value];
-    for (var i = 0; i < validCapacity.length; i++) {
-      if (adFormCapacity.value === validCapacity[i]) {
-        return true;
+  var isRoomsEnough = function (validCapacities) {
+    return validCapacities.some(function (it) {
+      return adFormCapacity.value === it;
+    });
+  };
+
+  var createStringIfRoomsNotEnough = function (validCapacities) {
+    var roomSelectedIndex = adFormRoomNumber.options.selectedIndex;
+    var result = adFormRoomNumber.options[roomSelectedIndex].text + ' - допустимое количество гостей:';
+
+    for (var i = 0; i < validCapacities.length; i++) {
+      if (i === validCapacities.length - 1) {
+        result = result + ' ' + validCapacities[i];
+      } else {
+        result = result + ' ' + validCapacities[i] + ',';
       }
     }
-    return false;
-  };
+
+    return result;
+  }
 
   var onAdFormCapacityOrRoomChange = function () {
-    if (isRoomsEnough()) {
+    var validCapacities = window.Constant.ROOMS_CAPACITIES[adFormRoomNumber.value];
+
+    if (isRoomsEnough(validCapacities)) {
       adFormCapacity.setCustomValidity('');
-    } else if (adFormRoomNumber.value === '100') {
-      adFormCapacity.setCustomValidity('100 комнат - не для гостей');
     } else {
-      adFormCapacity.setCustomValidity('Количество мест не может превышать Количество комнат');
+      adFormCapacity.setCustomValidity(createStringIfRoomsNotEnough(validCapacities));
     }
   };
 
@@ -61,15 +75,16 @@
 
   var resetPage = function () {
     window.debounce();
+    adForm.reset();
     filtersForm.reset();
     window.map.removeCard();
     window.map.removeSimilarPins();
     window.map.returnPinMainToStartPosition();
-    window.condition.inactiveStatus();
+    window.condition.deactivatePage();
   };
 
   window.form = {
-    setAdFormAddress: function (address) {
+    setAddress: function (address) {
       adFormAddress.value = address;
     }
   };
@@ -88,7 +103,7 @@
   adFormTimeIn.addEventListener('change', function () {
     adFormTimeOut.value = adFormTimeIn.value;
   });
-  adFormTimeIn.addEventListener('change', function () {
+  adFormTimeOut.addEventListener('change', function () {
     adFormTimeIn.value = adFormTimeOut.value;
   });
   adFormCapacity.addEventListener('change', onAdFormCapacityOrRoomChange);
@@ -98,10 +113,11 @@
     evt.preventDefault();
     window.upload(new FormData(adForm), function () {
       renderSuccessMessage(successTemplate);
-      adForm.reset();
+      resetPage();
     });
   });
-  adForm.addEventListener('reset', function () {
+  adFormButtonReset.addEventListener('click', function (evt) {
+    evt.preventDefault();
     resetPage();
   });
 })();
